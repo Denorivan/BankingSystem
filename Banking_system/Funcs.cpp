@@ -85,7 +85,7 @@ void startMenu() {
 			if (choice == 1)
 				admin_passwordCheck();
 			else if (choice == 2)
-				int a;
+				user_accSelection();
 		}
 		else if (choice == 0) {
 			cout << "~~~~~~~~~~~~~~~~~~~~" << endl;
@@ -95,6 +95,47 @@ void startMenu() {
 		else
 			thereIsNoSuchTipeOfAnswer();
 	}
+}
+
+void fileForWrite() {
+	ofstream fout;
+	string pathToPeople = "People.txt";
+	string pathToAccounts = "Accounts.txt";
+
+	//Открытие файла в котором хранятся пользователи, для затирки данных
+	fout.open(pathToPeople, ofstream::trunc);
+	fout.close();
+	//Открытие файла в котором хранятся счета, для затирки данных
+	fout.open(pathToAccounts, ofstream::trunc);
+	fout.close();
+
+	//Запись в файл в котором хранятся пользователи - начало
+	fout.open(pathToPeople, ofstream::app);
+
+	if (fout.is_open()) {
+		for (auto& temp : people) {
+			fout.write((char*)&temp, sizeof(Person));
+		}
+	}
+	else
+		cout << "File wasn't opened!" << endl;
+
+	fout.close();
+	//Запись в файл в котором хранятся пользователи - конец
+
+	//Запись в файл в котором хранятся счета - начало
+	fout.open(pathToAccounts, ofstream::app);
+
+	if (fout.is_open()) {
+		for (auto& temp : accounts) {
+			fout.write((char*)&temp, sizeof(BankAccount));
+		}
+	}
+	else
+		cout << "File wasn't opened!" << endl;
+
+	fout.close();
+	//Запись в файл в котором хранятся счета - конец
 }
 //----------------------------------------------------------------------------------------------------------------
 void admin_passwordCheck() {
@@ -316,5 +357,146 @@ void admin_delUser() {
 	}
 }
 //----------------------------------------------------------------------------------------------------------------
+void user_accSelection() {
+	for (;;) {
+		system("mode con cols=30 lines=7"); //Устанавливает размер окна
 
+		int answer;
+
+		line(30);
+		cout << "1 - Существующий пользователь" << endl;
+		cout << "2 - Новый пользователь" << endl;
+		cout << "0 - Вернуться назад" << endl;
+		line(30);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+
+		system("cls");
+
+		if (answer == 1)
+			user_existingAcc();
+		else if (answer == 2)
+			user_newAcc();
+		else if (answer == 0)
+			break;
+		else
+			thereIsNoSuchTipeOfAnswer();
+	}
+}
+
+void user_existingAcc() {
+	int check = 0; //Счётчик для количества попыток ввода пароля
+
+	for (;;) {
+		system("mode con cols=40 lines=7"); //Устанавливает размер окна
+
+		string nik, password;
+
+		if (people.empty()) { //Если список пуст
+			system("mode con cols=35 lines=4"); //Устанавливает размер окна]
+
+			line(35);
+			cout << "Список пользователей пуст!" << endl;
+			line(35);
+			Sleep(2500);   //Задержка в 2.5 секунды
+			system("cls"); //Очистка терминала
+
+			break;
+		}
+
+		if (check == 3) {
+			system("mode con cols=30 lines=4"); //Устанавливает размер окна
+			line(30);
+			cout << "Вы уже использовали слишком\nмного попыток на вход!" << endl;
+			line(30);     
+			Sleep(3000);  //Задержка в 3 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+		
+		line(30);
+		cout << "Введите никнейм пользователя:" << endl;;
+		cin >> nik;
+		cout << "Введите пароль пользователя:" << endl;
+		cin >> password;
+
+		system("cls");
+
+		find_if(people.begin(), people.end(), [&nik, &password, &check](Person& p)
+		{
+			if (nik == p.getNik()) {
+				if (password == p.getPassword())
+					user_menu();
+				else {
+					system("mode con cols=20 lines=4"); //Устанавливает размер окна
+					line(20);
+					cout << "Пароль не верный!" << endl;
+					line(20);
+					check++;      //Увеличение счётчика
+					Sleep(3000);  //Задержка в 3 секунды
+					system("cls");//Очистка терминала
+				}
+			}
+			else {
+				system("mode con cols=30 lines=4"); //Устанавливает размер окна
+				line(30);
+				cout << "Пользователя с таким\nникнеймом не существует!" << endl;
+				line(30);
+				check++;      //Увеличение счётчика
+				Sleep(3000);  //Задержка в 3 секунды
+				system("cls");//Очистка терминала
+			}
+
+			return 0;
+		});
+	}
+}
+
+void user_newAcc() {
+	system("mode con cols=40 lines=7"); //Устанавливает размер окна
+
+	line(40);
+	person.enterName();
+	person.enterSurname();
+	person.enterAge();
+	system("cls"); //Очистка терминала
+	person.enterNik();
+	//Проверка на совпадение никнейма
+	for (auto& temp : people) {
+		if (temp.getNik() == person.getNik()) {
+			line(40);
+			cout << "Пользователь с таким никнеймом\nуже существует!" << endl;
+			line(40);
+			Sleep(3000);  //Задержка в 3 секунды
+			system("cls");//Очистка терминала
+			line(40);
+			person.enterNik();
+		}
+	}
+	person.enterPassword();
+
+	system("cls"); //Очистка терминала
+
+	user_menu();
+}
+
+void user_menu() {
+	for (;;) {
+		system("mode con cols=20 lines=9"); //Устанавливает размер окна
+
+		int answer;
+
+		line(20);
+		cout << "1 - Личный кабинет" << endl;
+		cout << "2 - Добавить счёт" << endl;
+		cout << "3 - Удалить счёт" << endl;
+		cout << "4 - Перевести деньги" << endl;
+		cout << "0 - Вернуться назад" << endl;
+		line(20);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+
+		system("cls"); //Очистка терминала
+	}
+}
 //----------------------------------------------------------------------------------------------------------------
