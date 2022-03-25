@@ -1,8 +1,4 @@
 #include "Person.h"
-
-#include <iostream>
-#include <Windows.h>
-#include <ctime>
 //----------------------------------------------------------------------------------------------
 using namespace std;
 //----------------------------------------------------------------------------------------------
@@ -18,6 +14,17 @@ void Person::enterAge() {
 	cout << "Укажите возраст: ";
 	cin >> age;
 }
+void Person::enterNik() {
+	cout << "Придумайте никнейм: ";
+	cin >> nik;
+}
+void Person::enterPassword() {
+	cout << "Придумайте пароль для своего аккаунта: " << endl;
+	cin >> password;
+}
+
+string Person::getNik()      { return nik; }
+string Person::getPassword() { return password; }
 
 void Person::personInfo() {
 	cout << "Имя: " << name << endl;
