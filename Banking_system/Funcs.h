@@ -28,4 +28,12 @@ void user_accSelection();
 void user_existingAcc();
 void user_newAcc();
 void user_menu();
+void user_privateOffice();
+void user_infoAboutUser();
+void user_chengeInfoAboutUser();
+void user_infoAboutBankAccount();
+void user_delPrivateOffice();
+void user_addBankAccount();
+void user_delBankAccount();
+void user_sendMoney();
 //---------------------------------------------------------------------------------------------------------------
