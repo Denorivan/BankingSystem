@@ -3,14 +3,19 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 void BankAccount::enterOwner() {
-	cout << "Введите имя владельца счёта: ";
+	cout << "Введите имя владельца счёта:" << endl;
 	getline(cin, owner);
 }
-
 void BankAccount::enterPurpose() {
 	cout << "Укажите назначение счёта: " << endl;
 	getline(cin, purpose);
 }
+void BankAccount::enterPassword() {
+	cout << "Придумайте пароль для этого счёта: " << endl;
+	cin >> password;
+}
+
+string BankAccount::getPassword() { return password; }
 
 void BankAccount::idGeneration() {
 	srand(time(0));
@@ -45,7 +50,6 @@ void BankAccount::idGeneration() {
 			id += alphabet[index];
 	}
 }
-
 void BankAccount::numberGeneration() {
 	string tempStr;
 	int tempInt;
@@ -55,17 +59,21 @@ void BankAccount::numberGeneration() {
 		tempStr = to_string(tempInt);
 
 		if (i % 5 == 0)
-			number += ' ';
+			AccNumber += ' ';
 		else
-			number += tempStr;
+			AccNumber += tempStr;
 	}
 }
-
 void BankAccount::bankAccountInfo() {
 	cout << "Денег на счету: " << money << endl;
-	cout << "Номер счёта: " << number << endl;
+	cout << "Номер счёта: " << AccNumber << endl;
 	cout << "Id счёта: " << id << endl;
-	cout << "Владелец счёта: " << owner << endl;
-	cout << "Назначение счёта: " << purpose << endl;
+	cout << "Владелец счёта:\n" << owner << endl;
+	cout << "Назначение счёта:\n" << purpose << endl;
+}
+
+ostream& operator<< (ostream& out, BankAccount& acc) {
+	out << acc.number << ". " << acc.purpose;
+	return out;
 }
 //----------------------------------------------------------------------------------------------
