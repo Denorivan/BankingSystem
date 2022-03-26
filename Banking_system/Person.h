@@ -13,10 +13,12 @@ using namespace std;
 class Person {
 private:
 	string name, surname, nik, password;
-	int age, count = 0;
+	int age;
 public:
-	int number;
+	int number, count = 0;
 	vector<BankAccount> personAccs;
+
+	Person();
 
 	void enterName();
 	void enterSurname();
@@ -24,6 +26,7 @@ public:
 	void enterNik();
 	void enterPassword();
 
+	int getNumber();
 	string getNik();
 	string getPassword();
 
