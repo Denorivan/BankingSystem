@@ -4,10 +4,11 @@ using namespace std;
 //----------------------------------------------------------------------------------------------
 void BankAccount::enterOwner() {
 	cout << "¬ведите им€ владельца счЄта:" << endl;
+	cin.ignore(32767, '\n'); //»гнорируем символы перевода строки "\n" во вход€щем потоке
 	getline(cin, owner);
 }
 void BankAccount::enterPurpose() {
-	cout << "”кажите назначение счЄта: " << endl;
+	cout << "”кажите назначение счЄта:" << endl;
 	getline(cin, purpose);
 }
 void BankAccount::enterPassword() {
@@ -53,6 +54,8 @@ void BankAccount::idGeneration() {
 void BankAccount::numberGeneration() {
 	string tempStr;
 	int tempInt;
+
+	AccNumber = "";
 
 	for (int i = 1; i < 20; i++) {
 		tempInt = 1 + rand() % 9;

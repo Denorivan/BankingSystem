@@ -14,7 +14,7 @@ int main() {
 }
 //----------------------------------------------------------------------------------------------
 void run() {
-	system("mode con cols=30 lines=7"); //Устанавливает размер окна
+	system("mode con cols=30 lines=5"); //Устанавливает размер окна
 	static const TCHAR* myTitle = TEXT("Banking system");
 	SetConsoleTitle(myTitle);
 	
@@ -23,6 +23,7 @@ void run() {
 	SetConsoleOutputCP(1251);
 
 	int answer;
+	line(30);
 	cout << "Здравствуйте, войти в систему?\n(1 - да, 0 - нет)" << endl;
 	cout << "Ваш выбор: ";
 	cin >> answer;
@@ -32,15 +33,15 @@ void run() {
 		startMenu();
 	}
 	else if (answer == 0) { //Если пользователь не хочет продолжать
-		cout << "~~~~~~~~~~~~~~~~~~~~" << endl;
+		line(30);
 		cout << "Хорошо, до свидания!" << endl;
 	}
 	else { //Eсли пльзователь ввёл неправильный ответ
-		cout << "~~~~~~~~~~~~~~~~~~" << endl;
+		line(30);
 		cout << "Error! \nТакого ответа нет!" << endl;
 	}
 
-	cout << "~~~~~~~~~~~~~~~~~~~~" << endl;
+	line(30);
 	system("pause");
 	system("mode con cols=84 lines=7"); //Устанавливает размер окна
 }

@@ -9,10 +9,11 @@ using namespace std;
 //----------------------------------------------------------------------------------------------
 class BankAccount
 {
-protected:
-	string id, AccNumber, owner, purpose, password;
-	double money;
+private:
+	string id, owner, purpose, password;
 public:
+	string AccNumber;
+	double money = 1000;
 	int number;
 
 	void enterOwner();
