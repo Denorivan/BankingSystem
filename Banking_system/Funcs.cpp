@@ -32,6 +32,7 @@ void fileForRead() {
 	ifstream fin;
 	string pathToPeople = "People.txt";
 	string pathToAccounts = "Accounts.txt";
+
 	//Чтение файла в котором хранятся пользователи - начало
 	fin.open(pathToPeople);
 
@@ -591,7 +592,7 @@ void user_menu() {
 		else if (answer == 3)
 			user_delBankAccount();
 		else if (answer == 4)
-			int a;//user_sendMoney();
+			user_sendMoney();
 		else if (answer == 0) {
 			if (addCheck)
 				people.push_back(person);
@@ -972,5 +973,192 @@ void user_delBankAccount() {
 	}
 }
 
-//void user_sendMoney()
+void user_sendMoney() {
+	for (;;) {
+		system("mode con cols=50 lines=7"); //Устанавливает размер окна
+
+		int answer;
+
+		if (person.personAccs.empty()) {
+			system("mode con cols=15 lines=4"); //Устанавливает размер окна
+			line(15);
+			cout << "У вас ещё нет счетов!" << endl;
+			line(15);
+			Sleep(2000);  //Задержка 2 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+
+		line(50);
+		cout << "1 - Перевести деньги на свой счёт" << endl;
+		cout << "2 - Перевести деньги на счёт другого пользователя" << endl;
+		cout << "0 - Вернуться назад" << endl;
+		line(50);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+
+		system("cls");//Очистка терминала
+
+		if (answer == 1)
+			user_sendMoneyToOwnAcc();
+		else if (answer == 2)
+			user_sendMoneyToOtherAcc();
+		else if (answer == 0)
+			break;
+		else
+			thereIsNoSuchTipeOfAnswer();
+	}
+}
+
+void user_sendMoneyToOwnAcc() {
+	for (;;) {
+		system("mode con cols=55 lines=10"); //Устанавливает размер окна
+
+		int firstAcc, secondAcc;
+		double sum;
+
+		if (person.personAccs.size() == 1) {
+			system("mode con cols=30 lines=4"); //Устанавливает размер окна
+			line(30);
+			cout << "У вас ещё нет другого счёта!" << endl;
+			line(30);
+			Sleep(2000);  //Задержка 2 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+
+		line(55);
+		int a = 0; //Счётчик для нумерации
+		//Перебор массива и вывод списка счетов
+		for (auto& temp : person.personAccs) {
+			temp.number = a + 1;  //Присваивание счету номера
+			cout << temp << endl; //Вывод номера счета и назначения
+
+			a++; //Увиличение счётчика нумерации
+		}
+		line(55);
+		cout << "Выберите счёт с которого хотите перевести деньги: ";
+		cin >> firstAcc;
+		system("cls");//Очистка терминал
+
+		line(55);
+		a = 0; //Онуляем счётчик
+		//Перебор массива и вывод списка счетов
+		for (auto& temp : person.personAccs) {
+			temp.number = a + 1;  //Присваивание счету номера
+			cout << temp << endl; //Вывод номера счета и назначения
+
+			a++; //Увиличение счётчика нумерации
+		}
+		line(55);
+		cout << "Выберите счёт на который хотите перевести деньги: ";
+		cin >> secondAcc;
+		system("cls");//Очистка терминал
+
+		if (firstAcc == secondAcc) {
+			system("mode con cols=35 lines=5"); //Устанавливает размер окна
+			line(35);
+			cout << "Ошибка! Операция отменена!" << endl;
+			cout << "Вы выбрали два одинаковых счёта!" << endl;
+			line(35);
+			Sleep(3000);  //Задержка 3 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+		system("mode con cols=30 lines=4"); //Устанавливает размер окна
+		line(30);
+		cout << "Введите сумму перевода: ";
+		cin >> sum;
+		system("cls");//Очистка терминал
+		//Цикл для перебора вектора счетов пользователя
+		for (auto& temp : person.personAccs) {
+			//Поиск счёта с которого переводить
+			if (temp.number == firstAcc)
+				temp.money -= sum;
+			//Поиск счёта на который переводить
+			if (temp.number == secondAcc)
+				temp.money += sum;
+		}
+
+		line(30);
+		cout << "Сумма успешно отправлена!";
+		line(30);
+		Sleep(2000);  //Задержка 2 секунды
+		system("cls");//Очистка терминал
+		break;
+	}
+}
+
+void user_sendMoneyToOtherAcc() {
+	for (;;) {
+		system("mode con cols=55 lines=10"); //Устанавливает размер окна
+
+		int firstAcc;
+		string secondAcc;
+		double sum;
+
+		line(55);
+		int a = 0; //Счётчик для нумерации
+		//Перебор массива и вывод списка счетов
+		for (auto& temp : person.personAccs) {
+			temp.number = a + 1;  //Присваивание счету номера
+			cout << temp << endl; //Вывод номера счета и назначения
+
+			a++; //Увиличение счётчика нумерации
+		}
+		line(55);
+		cout << "Выберите счёт с которого хотите перевести деньги: ";
+		cin >> firstAcc;
+		system("cls");//Очистка терминал
+
+		line(55);
+		cout << "Введите номер счёта на который хотите перевести деньги:" << endl;
+		cin.ignore(32767, '\n'); //Игнорируем символы перевода строки "\n" во входящем потоке
+		getline(cin, secondAcc);
+		system("cls");//Очистка терминал
+
+		//Проверка на наличие такого номера счёта у других пользователей
+		bool check = true;
+		for (auto& temp : accounts) {
+			if (temp.AccNumber == secondAcc)
+				check = false;
+		}
+		if (check) {
+			system("mode con cols=30 lines=5"); //Устанавливает размер окна
+			line(30);
+			cout << "Ошибка! Операция отменена!" << endl;
+			cout << "Счёта с таким номером нет!" << endl;
+			line(30);
+			Sleep(3000);  //Задержка 3 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+
+		system("mode con cols=30 lines=4"); //Устанавливает размер окна
+
+		line(30);
+		cout << "Введите сумму перевода: ";
+		cin >> sum;
+		system("cls");//Очистка терминал
+		//Цикл для перебора вектора счетов пользователя
+		for (auto& temp : person.personAccs) {
+			//Поиск счёта с которого переводить
+			if (temp.number == firstAcc)
+				temp.money -= sum;
+		}
+		//Цикл для перебора вектора счетов
+		for (auto& temp : accounts) {
+			//Поиск счёта на который переводить
+			if (temp.AccNumber == secondAcc)
+				temp.money += sum;
+		}
+
+		line(30);
+		cout << "Сумма успешно отправлена!";
+		line(30);
+		Sleep(2000);  //Задержка 2 секунды
+		system("cls");//Очистка терминал
+		break;
+	}
+}
 //----------------------------------------------------------------------------------------------------------------
