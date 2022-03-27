@@ -36,5 +36,7 @@ void user_chengeInfoAboutBankAccount(int aboutWhich); //Функция для изменения ин
 void user_delPrivateOffice();     //Функция для удаления личного кабинета и аккаунта пользователя
 void user_addBankAccount();       //Функция для добавления счёта
 void user_delBankAccount();       //Функция для удаления счёта
-void user_sendMoney();            //Функция для пересылки денег с счёта на счёт
+void user_sendMoney();            //Функция для меню пересылания денег
+void user_sendMoneyToOwnAcc();    //Функция для пересылания денег на свой счёт
+void user_sendMoneyToOtherAcc();  //Функция для пересылания денег на счёт другого пользователя
 //---------------------------------------------------------------------------------------------------------------
