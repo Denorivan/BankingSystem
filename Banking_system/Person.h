@@ -17,6 +17,7 @@ private:
 public:
 	int number, count = 0;
 	vector<BankAccount> personAccs;
+	vector<string> vecForNums;
 
 	Person();
 
