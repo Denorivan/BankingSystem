@@ -10,30 +10,31 @@
 #include "Person.h"
 #include "BankAccount.h"
 //---------------------------------------------------------------------------------------------------------------
-void line(int a);
-void thereIsNoSuchTipeOfAnswer();
+void line(int a);                //Функция для вывода линии
+void thereIsNoSuchTipeOfAnswer();//Функция для вывода информации про то если был указан неверный ответ
 //---------------------------------------------------------------------------------------------------------------
-void fileForRead();
-void startMenu();
-void fileForWrite();
+void fileForRead(); //Функция для чтения данных из файла и заполнения векторов для дальнейшей работы 
+void startMenu();   //Функция для выбора "Админ" или "Пользователь"
+void fileForWrite();//Функция для перебора векторов и записи данных в файл для запоминания
 //---------------------------------------------------------------------------------------------------------------
-void admin_passwordCheck();
-void admin_menu();
-void admin_listOfUsers();
-void admin_infoAboutUser(int aboutWho);
-void admin_infoAboutBankAccount();
-void admin_delUser();
+void admin_passwordCheck();             //Функция для проверки пароля админа
+void admin_menu();                      //Функция для меню админа
+void admin_listOfUsers();               //Функция для вывода списка всех пользователей
+void admin_infoAboutUser(int aboutWho); //Функция для вывода информации про выбранного польлзователя
+void admin_infoAboutBankAccount(int aboutWhich);//Функция для вывода информации про банковский счёт выбранного пользователя
+void admin_delUser();                   //Функция для удаления пользователя
 //---------------------------------------------------------------------------------------------------------------
-void user_accSelection();
-void user_existingAcc();
-void user_newAcc();
-void user_menu();
-void user_privateOffice();
-void user_infoAboutUser();
-void user_chengeInfoAboutUser();
-void user_infoAboutBankAccount();
-void user_delPrivateOffice();
-void user_addBankAccount();
-void user_delBankAccount();
-void user_sendMoney();
+void user_accSelection();         //Функция для выбора аккаунта пользователя
+void user_existingAcc();          //Функция для проверки ника и пароля существующего аккаунта
+void user_newAcc();               //Функция для заполнения данных для нового аккаунта
+void user_menu();                 //Функция для меню пользователя
+void user_privateOffice();        //Функция для личного кабинета пользователя
+void user_infoAboutUser();        //Функция для вывода инфорамации про пользователя                
+void user_chengeInfoAboutUser();  //Функция для изменения информации про пользователя
+void user_infoAboutBankAccount(); //Функция для вывода информации про счета пользователя
+void user_chengeInfoAboutBankAccount(int aboutWhich); //Функция для изменения информации про выбранный счёт
+void user_delPrivateOffice();     //Функция для удаления личного кабинета и аккаунта пользователя
+void user_addBankAccount();       //Функция для добавления счёта
+void user_delBankAccount();       //Функция для удаления счёта
+void user_sendMoney();            //Функция для пересылки денег с счёта на счёт
 //---------------------------------------------------------------------------------------------------------------
