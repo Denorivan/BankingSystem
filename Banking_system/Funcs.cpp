@@ -18,6 +18,8 @@ void line(int a) {
 }
 
 void thereIsNoSuchTipeOfAnswer() {
+	system("mode con cols=30 lines=5"); //Устанавливает размер окна
+
 	line(30);
 	cout << "Такого ответа нет!" << endl;
 	cout << "Проверьте и попробуйте ещё раз" << endl;
@@ -34,10 +36,8 @@ void fileForRead() {
 	fin.open(pathToPeople);
 
 	if (fin.is_open()) {
-		Person copy;
-
-		while (fin.read((char*)&copy, sizeof(Person))) {
-			people.push_back(copy);
+		while (fin.read((char*)&person, sizeof(Person))) {
+			people.push_back(person);
 		}
 	}
 	else
@@ -50,10 +50,8 @@ void fileForRead() {
 	fin.open(pathToAccounts);
 
 	if (fin.is_open()) {
-		BankAccount copy;
-
-		while (fin.read((char*)&copy, sizeof(BankAccount))) {
-			accounts.push_back(copy);
+		while (fin.read((char*)&bankAcc, sizeof(BankAccount))) {
+			accounts.push_back(bankAcc);
 		}
 	}
 	else
@@ -61,6 +59,17 @@ void fileForRead() {
 
 	fin.close();
 	//Чтение файла в котором хранятся счета - конец
+	
+	//Для добавления нужных счетов, полученых из файла, в аккаунт нужного пользователя
+	for (auto& accs : accounts) { //Цикл для перебора списка счетов
+		for (auto& pers : people) { //Цикл для перебора списка пользователей
+			for (auto& nums : pers.vecForNums) { //Цикл для перебора списка номеров счетов пользователя
+				//Если номер счета совпал с номером счёта пользователя - добавление этого счёта в акк
+				if (accs.AccNumber == nums) 
+					pers.personAccs.push_back(accs);
+			}
+		}
+	}
 }
 
 void startMenu() {
@@ -88,7 +97,9 @@ void startMenu() {
 				user_accSelection();
 		}
 		else if (choice == 0) {
-			cout << "~~~~~~~~~~~~~~~~~~~~" << endl;
+			fileForWrite();
+
+			line(30);
 			cout << "Хорошо, до свидания!" << endl;
 			break;
 		}
@@ -114,7 +125,8 @@ void fileForWrite() {
 
 	if (fout.is_open()) {
 		for (auto& temp : people) {
-			fout.write((char*)&temp, sizeof(Person));
+			person = temp;
+			fout.write((char*)&person, sizeof(Person));
 		}
 	}
 	else
@@ -128,7 +140,8 @@ void fileForWrite() {
 
 	if (fout.is_open()) {
 		for (auto& temp : accounts) {
-			fout.write((char*)&temp, sizeof(BankAccount));
+			bankAcc = temp;
+			fout.write((char*)&bankAcc, sizeof(BankAccount));
 		}
 	}
 	else
@@ -139,7 +152,7 @@ void fileForWrite() {
 }
 //----------------------------------------------------------------------------------------------------------------
 void admin_passwordCheck() {
-	system("mode con cols=30 lines=10"); //Устанавливает размер окна
+	system("mode con cols=30 lines=3"); //Устанавливает размер окна
 
 	string password;
 
@@ -152,6 +165,7 @@ void admin_passwordCheck() {
 	if (password == "Password123")
 		admin_menu();
 	else {
+		system("mode con cols=30 lines=5"); //Устанавливает размер окна
 		line(30);
 		cout << "Пароль не правильный!" << endl;
 		cout << "Доступ запрещён!" << endl;
@@ -195,9 +209,10 @@ void admin_listOfUsers() {
 		int answer;
 
 		if (people.empty()) { //Если список пуст
-			line(35);
+			system("mode con cols=30 lines=4"); //Устанавливает размер окна
+			line(30);
 			cout << "Список пользователей пуст!" << endl;
-			line(35);
+			line(30);
 			Sleep(2500);   //Задержка в 2 секунды
 			system("cls"); //Очистка терминала
 
@@ -223,7 +238,7 @@ void admin_listOfUsers() {
 		system("cls");
 
 		if (answer == 1) {
-			system("mode con cols=40 lines=4"); //Устанавливает размер окна
+			system("mode con cols=40 lines=10"); //Устанавливает размер окна
 
 			int who;
 
@@ -267,12 +282,12 @@ void admin_infoAboutUser(int aboutWho) {
 			break;
 		}
 		//Функция стандартной бибдиотеки STL для поиска
-		auto res = find_if(people.begin(), people.end(), [&aboutWho](Person& person)
+		auto res = find_if(people.begin(), people.end(), [&aboutWho](Person& p)
 		{
 			//Если пользователь найден
-			if (aboutWho == person.number) {
+			if (aboutWho == p.number) {
 				line(35);
-				person.personInfo(); //Вывод подробной информации про пользователя
+				p.personInfo(); //Вывод подробной информации про пользователя
 			}
 
 			return 0;
@@ -288,7 +303,7 @@ void admin_infoAboutUser(int aboutWho) {
 		system("cls");
 
 		if (answer == 1)
-			int a; //admin_infoAboutBankAccount();
+			admin_infoAboutBankAccount(aboutWho);
 		else if (answer == 0)
 			break;
 		else
@@ -296,7 +311,60 @@ void admin_infoAboutUser(int aboutWho) {
 	}
 }
 
-//void admin_infoAboutBankAccount()
+void admin_infoAboutBankAccount(int aboutWhich) {
+	for (;;) {
+		system("mode con cols=40 lines=11"); //Устанавливает размер окна
+
+		int answer;
+
+		if (person.personAccs.empty()) {
+			system("mode con cols=40 lines=4"); //Устанавливает размер окна
+			line(40);
+			cout << "У этого пользователя ещё нет счетов!" << endl;
+			line(40);
+			Sleep(2000);  //Задержка 2 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+
+		line(40);
+		int a = 0; //Счётчик для нумерации
+		//Перебор вектора и вывод списка счетов
+		for (auto& temp : person.personAccs) {
+			temp.number = a + 1;  //Присваивание счету номера
+			cout << temp << endl; //Вывод номера счета и назначения
+
+			a++; //Увиличение счётчика нумерации
+		}
+		line(40);
+		cout << "Выберите счёт, про который\nхотите посмотреть информацию: ";
+		cin >> aboutWhich;
+		system("cls");//Очистка терминал
+		//Проверка на правильность ввода номерва счета
+		if (aboutWhich < 1 || aboutWhich > person.personAccs.size()) {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
+		line(40);
+		//Перебор вектора и поиск нужного счета
+		for (auto& temp : person.personAccs) {
+			if (temp.number == aboutWhich)
+				temp.bankAccountInfo();
+		}
+		line(40);
+		cout << "0 - Вернуться назад" << endl;
+		line(40);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+
+		system("cls");//Очистка терминал
+
+		if (answer == 0)
+			break;
+		else
+			thereIsNoSuchTipeOfAnswer();
+	}
+}
 
 void admin_delUser() {
 	for (;;) {
@@ -560,7 +628,7 @@ void user_privateOffice() {
 		if (answer == 1)
 			user_infoAboutUser();
 		else if (answer == 2)
-			int a;//user_infoAboutBankAccount();
+			user_infoAboutBankAccount();
 		else if (answer == 3)
 			user_delPrivateOffice();
 		else if (answer == 0) 
@@ -597,7 +665,7 @@ void user_infoAboutUser() {
 }
 
 void user_chengeInfoAboutUser() {
-	system("mode con cols=25 lines=9"); //Устанавливает размер окна
+	system("mode con cols=25 lines=10"); //Устанавливает размер окна
 
 	int answer;
 
@@ -613,6 +681,7 @@ void user_chengeInfoAboutUser() {
 	cout << "Ваш выбор: ";
 	cin >> answer;
 	system("cls"); //Очистка терминала 
+	line(25);
 	
 	switch (answer) {
 	case 1: person.enterName(); 
@@ -630,10 +699,126 @@ void user_chengeInfoAboutUser() {
 	system("cls"); //Очистка терминала 
 }
 
-//void user_infoAboutBankAccount()
+void user_infoAboutBankAccount() {
+	for (;;) {
+		system("mode con cols=40 lines=14"); //Устанавливает размер окна
+
+		int answer, aboutWhich;
+
+		if (person.personAccs.empty()) {
+			system("mode con cols=25 lines=4"); //Устанавливает размер окна
+			line(25);
+			cout << "У вас ещё нет счетов!" << endl;
+			line(25);
+			Sleep(2000);  //Задержка 2 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
+		line(40);
+		int a = 0; //Счётчик для нумерации
+		//Перебор вектора и вывод списка счетов
+		for (auto& temp : person.personAccs) {
+			temp.number = a + 1;  //Присваивание счету номера
+			cout << temp << endl; //Вывод номера счета и назначения
+
+			a++; //Увиличение счётчика нумерации
+		}
+		line(40);
+		cout << "Выберите счёт, про который\nхотите посмотреть информацию: ";
+		cin >> aboutWhich;
+		system("cls");//Очистка терминал
+		//Проверка на правильность ввода номерва счета
+		if (aboutWhich < 1 || aboutWhich > person.personAccs.size()) {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
+		line(40);
+		//Перебор вектора и поиск нужного счета
+		for (auto& temp : person.personAccs) {
+			if (temp.number == aboutWhich)
+				temp.bankAccountInfo();
+		}
+		line(40);
+		cout << "1 - Изменить информацию" << endl;
+		cout << "0 - Вернуться назад" << endl;
+		line(40);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+
+		system("cls");//Очистка терминал
+
+		if (answer == 1)
+			user_chengeInfoAboutBankAccount(aboutWhich);
+		else if (answer == 0)
+			break;
+		else
+			thereIsNoSuchTipeOfAnswer();
+	}
+}
+
+void user_chengeInfoAboutBankAccount(int aboutWhich) {
+	system("mode con cols=25 lines=11"); //Устанавливает размер окна
+
+	int answer;
+
+	//Перебор вектора и поиск нужного счета в аккаунте пользователя
+	for (auto& temp : person.personAccs) {
+		if (temp.number == aboutWhich) {
+			bankAcc = temp;
+			auto iter = person.personAccs.begin() + (temp.number - 1);
+			person.personAccs.erase(iter);
+		}
+	}
+
+	//Перебор вектора и поиск нужного счета в общем списке счетов
+	int a = 0; //Счётчик для нумерации
+	for (auto& temp : accounts) {
+		temp.number = a + 1; //Присваивание счетам общего списка номера
+		if (temp.number == aboutWhich) {
+			bankAcc = temp;
+			auto iter = accounts.begin() + (temp.number - 1);
+			accounts.erase(iter);
+		}
+		a++; //Увеличение счётчика
+	}
+
+	line(25);
+	cout << "Что вы хотите поменять?" << endl;
+	line(25);
+	cout << "1 - Номер счёта" << endl;
+	cout << "2 - id счёта" << endl;
+	cout << "3 - Владельца счёта" << endl;
+	cout << "4 - Назначение счёта" << endl;
+	cout << "5 - Пароль счёта" << endl;
+	line(25);
+	cout << "Ваш выбор: ";
+	cin >> answer;
+	system("cls"); //Очистка терминала
+	line(25);
+
+	switch (answer) {
+	case 1: bankAcc.numberGeneration();
+		break;
+	case 2: bankAcc.idGeneration();
+		break;
+	case 3: bankAcc.enterOwner();
+		break;
+	case 4: bankAcc.enterPurpose();
+		break;
+	case 5: bankAcc.enterPassword();
+		break;
+	default: thereIsNoSuchTipeOfAnswer();
+	}
+
+	Sleep(2000);   //Задержка 2 секунды
+	system("cls"); //Очистка терминала
+
+	person.personAccs.push_back(bankAcc); //Перезаписывание счёта в аккаунт пользователя
+	accounts.push_back(bankAcc);          //Перезаписывание счёта в общий список счетов
+}
 
 void user_delPrivateOffice() {
-	system("mode con cols=45 lines=5"); //Устанавливает размер окна
+	system("mode con cols=45 lines=6"); //Устанавливает размер окна
 
 	int answer;
 
@@ -645,23 +830,32 @@ void user_delPrivateOffice() {
 	system("cls"); //Очистка терминала
 
 	if (answer == 1) { //Если пользователь подтвердил удаление
-		system("mode con cols=30 lines=3"); //Устанавливает размер окна
+		system("mode con cols=32 lines=4"); //Устанавливает размер окна
 
-		line(30);
+		line(32);
 		cout << "Пользователь был успешно удалён!" << endl;
+		line(32);
+		Sleep(2000);  //Задержка 2 секунды
+		system("cls");//Очистка терминала
 		addCheck = false;
 	}
 	else if (answer == 0) { //Если пользователь отменил удаление
-		system("mode con cols=20 lines=3"); //Устанавливает размер окна
+		system("mode con cols=20 lines=4"); //Устанавливает размер окна
 
 		line(20);
 		cout << "Операция отменена!" << endl;
+		line(20);
+		Sleep(2000);  //Задержка 2 секунды
+		system("cls");//Очистка терминала
 	}
 	else { //Если пользователь ввёл неправильное число
-		system("mode con cols=20 lines=3"); //Устанавливает размер окна
+		system("mode con cols=20 lines=4"); //Устанавливает размер окна
 
 		line(20);
 		cout << "Такого ответа нету!\nОперация отменена!" << endl;
+		line(20);
+		Sleep(2000);  //Задержка 2 секунды
+		system("cls");//Очистка терминала
 	}
 }
 
@@ -688,7 +882,9 @@ void user_addBankAccount() {
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
 
-		person.personAccs.push_back(bankAcc);
+		person.vecForNums.push_back(bankAcc.AccNumber); //Добавление номера в вектор для номеров
+		person.personAccs.push_back(bankAcc);           //Добавление счёта в список счетов пользователя
+		accounts.push_back(bankAcc);                    //Добавление счёта в ощий список счетов
 	}
 }
 
@@ -725,10 +921,10 @@ void user_delBankAccount() {
 			thereIsNoSuchTipeOfAnswer();
 			break;
 		}
-
-		line(40);
+		system("mode con cols=42 lines=5"); //Устанавливает размер окна
+		line(42);
 		cout << "Вы действительно хотите удалить этот счёт?\n(1 - да, 0 - нет)" << endl;
-		line(40);
+		line(42);
 		cout << "Ваш ответ: ";
 		cin >> answer;
 		system("cls"); //Очистка терминала
@@ -737,13 +933,19 @@ void user_delBankAccount() {
 			person.count -= 1;
 			
 			int index = whoDelete - 1;
-			auto iter = person.personAccs.begin();
+			auto iter1 = person.vecForNums.begin() + index;
+			auto iter2 = person.personAccs.begin() + index;
 
-			person.personAccs.erase(iter);
+			person.vecForNums.erase(iter1); //Удаление определённого номера счёта из списка номеров
+			person.personAccs.erase(iter2); //Удаление счёта из списка счетов пользователя
 
 			line(30);
 			cout << "Этот счёт был успешно удалён!" << endl;
 			line(30);
+
+			Sleep(2000);   //Задержка 2 секунды
+			system("cls"); //Очистка терминала
+			break;
 		}
 		else if (answer == 0) { //Если пользователь отменил удаление
 			system("mode con cols=20 lines=4"); //Устанавливает размер окна
@@ -751,6 +953,10 @@ void user_delBankAccount() {
 			line(20);
 			cout << "Операция отменена!" << endl;
 			line(20);
+
+			Sleep(2000);   //Задержка 2 секунды
+			system("cls"); //Очистка терминала
+			break;
 		}
 		else { //Если пользователь ввёл неправильное число
 			system("mode con cols=20 lines=4"); //Устанавливает размер окна
@@ -758,6 +964,10 @@ void user_delBankAccount() {
 			line(20);
 			cout << "Такого ответа нету!\nОперация отменена!" << endl;
 			line(20);
+
+			Sleep(2000);   //Задержка 2 секунды
+			system("cls"); //Очистка терминала
+			break;
 		}
 	}
 }
