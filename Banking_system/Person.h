@@ -15,7 +15,7 @@ private:
 	string name, surname, nik, password;
 	int age;
 public:
-	int number, count = 0;
+	int number, count;
 	vector<BankAccount> personAccs;
 	vector<string> vecForNums;
 

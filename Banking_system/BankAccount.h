@@ -13,12 +13,13 @@ private:
 	string id, owner, purpose, password;
 public:
 	string AccNumber;
-	double money = 1000;
+	double money;
 	int number;
 
 	void enterOwner();
 	void enterPurpose();
 	void enterPassword();
+	void enterMoney();
 
 	string getPassword();
 

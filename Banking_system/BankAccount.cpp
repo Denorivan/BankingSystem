@@ -3,17 +3,21 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 void BankAccount::enterOwner() {
-	cout << "Введите имя владельца счёта:" << endl;
+	cout << "Введите имя владельца счёта: ";
 	cin.ignore(32767, '\n'); //Игнорируем символы перевода строки "\n" во входящем потоке
 	getline(cin, owner);
 }
 void BankAccount::enterPurpose() {
-	cout << "Укажите назначение счёта:" << endl;
+	cout << "Укажите назначение счёта: ";
 	getline(cin, purpose);
 }
 void BankAccount::enterPassword() {
-	cout << "Придумайте пароль для этого счёта: " << endl;
+	cout << "Придумайте пароль для этого счёта: ";
 	cin >> password;
+}
+void BankAccount::enterMoney() {
+	cout << "Укажите сумму, которую хотите положить на счёт: ";
+	cin >> money;
 }
 
 string BankAccount::getPassword() { return password; }
@@ -71,8 +75,8 @@ void BankAccount::bankAccountInfo() {
 	cout << "Денег на счету: " << money << endl;
 	cout << "Номер счёта: " << AccNumber << endl;
 	cout << "Id счёта: " << id << endl;
-	cout << "Владелец счёта:\n" << owner << endl;
-	cout << "Назначение счёта:\n" << purpose << endl;
+	cout << "Владелец счёта: " << owner << endl;
+	cout << "Назначение счёта: " << purpose << endl;
 }
 
 ostream& operator<< (ostream& out, BankAccount& acc) {
