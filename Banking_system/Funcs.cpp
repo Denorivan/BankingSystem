@@ -419,6 +419,7 @@ void admin_delUser() {
 //----------------------------------------------------------------------------------------------------------------
 bool addCheck = true; //Переменная для проверки добавлять ли пользователя в общий список
 int selection;        //Переменая для проверки новый ли пользователь или уже существующий
+string Nik;           //Переменая для входа и проверки для обновления данных
 
 void user_accSelection() {
 	for (;;) {
@@ -457,7 +458,7 @@ void user_existingAcc() {
 	int check = 0; //Счётчик для количества попыток ввода пароля
 
 	for (;;) {
-		string nik, password;
+		string password;
 		bool checkNik = false;
 
 		if (people.empty()) { //Если список пуст
@@ -481,10 +482,10 @@ void user_existingAcc() {
 		
 		line(70);
 		cout << "Введите никнейм пользователя:" << endl;;
-		cin >> nik;
+		cin >> Nik;
 		//Перебор вектора и проверка на существование такого ника
 		for (auto& temp : people) {
-			if (nik == temp.getNik())
+			if (Nik == temp.getNik())
 				checkNik = true;
 		}
 		//Если пользователя с таким ником нет
@@ -504,7 +505,7 @@ void user_existingAcc() {
 		system("cls");
 
 		for (auto p : people) {
-			if (nik == p.getNik()) {
+			if (Nik == p.getNik()) {
 				if (password == p.getPassword()) {
 					person = p;
 
@@ -588,8 +589,22 @@ void user_menu() {
 		else if (answer == 4)
 			user_sendMoney();
 		else if (answer == 0) {
+			//Добавление пользователя в общий список
 			if (selection == 2 && addCheck)
 				people.push_back(person);
+			//Обновление данных в общем списке про конкретного пользователя
+			if (addCheck) {
+				for (auto& p : people) {
+					if (Nik == p.nik) {
+						p.count = person.count;
+						p.name = person.name;
+						p.surname = person.surname;
+						p.age = person.age;
+						p.nik = person.nik;
+						p.password = person.password;
+					}
+				}
+			}
 			break;
 		}
 		else
@@ -756,9 +771,8 @@ void user_chengeInfoAboutBankAccount(int aboutWhich) {
 	line(70);
 	cout << "1 - Номер счёта" << endl;
 	cout << "2 - id счёта" << endl;
-	cout << "3 - Владельца счёта" << endl;
-	cout << "4 - Назначение счёта" << endl;
-	cout << "5 - Пароль счёта" << endl;
+	cout << "3 - Назначение счёта" << endl;
+	cout << "4 - Пароль счёта" << endl;
 	line(70);
 	cout << "Ваш выбор: ";
 	cin >> answer;
@@ -770,11 +784,9 @@ void user_chengeInfoAboutBankAccount(int aboutWhich) {
 		break;
 	case 2: bankAcc.idGeneration();
 		break;
-	case 3: bankAcc.enterOwner();
+	case 3: bankAcc.enterPurpose();
 		break;
-	case 4: bankAcc.enterPurpose();
-		break;
-	case 5: bankAcc.enterPassword();
+	case 4: bankAcc.enterPassword();
 		break;
 	default: thereIsNoSuchTipeOfAnswer();
 	}
@@ -828,7 +840,7 @@ void user_addBankAccount() {
 	else {
 		person.count++; //Увеличиваем счётчик количества счетов пользователя
 		line(70);
-		bankAcc.enterOwner();
+		bankAcc.owner = person.surname + " " + person.name;
 		bankAcc.enterPurpose();
 		bankAcc.enterMoney();
 		bankAcc.enterPassword();
@@ -1005,7 +1017,7 @@ void user_sendMoneyToOwnAcc() {
 			cout << "Ошибка! Операция отменена!" << endl;
 			cout << "Вы выбрали два одинаковых счёта!" << endl;
 			line(70);
-			Sleep(3000);  //Задержка 3 секунды
+			Sleep(5000);  //Задержка 5 секунды
 			system("cls");//Очистка терминала
 			break;
 		}
@@ -1021,9 +1033,9 @@ void user_sendMoneyToOwnAcc() {
 				checkMoney = false;
 				line(35);
 				cout << "Ошибка! Операция отменена!" << endl;
-				cout << "Сумма, которую вы ввели, привышает\nсумму, которая есть на вашем счету!" << endl;
+				cout << "Сумма, которую вы ввели, превышает\nсумму, которая есть на вашем счету!" << endl;
 				line(35);
-				Sleep(3000);  //Задержка 3 секунды
+				Sleep(5000);  //Задержка 5 секунд
 				system("cls");//Очистка терминала
 				break;
 			}
