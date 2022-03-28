@@ -10,13 +10,12 @@ using namespace std;
 class BankAccount
 {
 private:
-	string id, owner, purpose, password;
+	string id, purpose, password;
 public:
-	string AccNumber;
+	string AccNumber, owner;
 	double money;
 	int number;
 
-	void enterOwner();
 	void enterPurpose();
 	void enterPassword();
 	void enterMoney();

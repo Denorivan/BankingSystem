@@ -11,11 +11,10 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 class Person {
-private:
-	string name, surname, nik, password;
-	int age;
 public:
-	int number, count;
+	string name, surname, nik, password;
+	int age, number, count;
+
 	vector<BankAccount> personAccs; //¬ектор дл€ хранени€ счетов пользовател€
 	vector<string> vecForNums;      //¬ектор дл€ хранени€ номеров счетов пользовател€
 

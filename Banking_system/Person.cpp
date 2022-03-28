@@ -37,7 +37,7 @@ void Person::personInfo() {
 	cout << "Фамилия: " << surname << endl;
 	cout << "Возраст: " << age << endl;
 	cout << "Никнейм: " << nik << endl;
-	cout << "Количетство счетов: " << count << endl;
+	cout << "Количество счетов: " << count << endl;
 }
 
 ostream& operator<< (ostream& out, Person& person) {
