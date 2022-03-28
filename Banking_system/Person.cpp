@@ -24,7 +24,7 @@ void Person::enterNik() {
 	cin >> nik;
 }
 void Person::enterPassword() {
-	cout << "Придумайте пароль для своего аккаунта: " << endl;
+	cout << "Придумайте пароль для своего аккаунта: ";
 	cin >> password;
 }
 

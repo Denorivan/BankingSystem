@@ -16,22 +16,22 @@ private:
 	int age;
 public:
 	int number, count;
-	vector<BankAccount> personAccs;
-	vector<string> vecForNums;
+	vector<BankAccount> personAccs; //Вектор для хранения счетов пользователя
+	vector<string> vecForNums;      //Вектор для хранения номеров счетов пользователя
 
-	Person();
+	Person();            //Конструктор по умолчанию
 
-	void enterName();
-	void enterSurname();
-	void enterAge();
-	void enterNik();
-	void enterPassword();
+	void enterName();    //Метод для ввода имени
+	void enterSurname(); //Метод для ввода фамилии
+	void enterAge();     //Метод для ввода возраста
+	void enterNik();     //Метод для ввода никнейма
+	void enterPassword();//Метод для ввода пароля
 
-	int getNumber();
-	string getNik();
-	string getPassword();
+	int getNumber();     //Метод для получения номера пользователя
+	string getNik();     //Метод для получения ника пользователя
+	string getPassword();//Метод для получения пароля
 
-	void personInfo();
+	void personInfo();   //Метод для вывода всей информации про пользователя
 	//------ Дружеский метод для перегрузки опертаора вывода ------
 	friend ostream& operator<< (ostream& out, Person& person);
 };

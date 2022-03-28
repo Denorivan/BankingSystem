@@ -45,6 +45,8 @@ void fileForRead() {
 	fin.close();
 	//Чтение файла в котором хранятся пользователи - конец
 
+
+
 	//Чтение файла в котором хранятся счета - начало
 	fin.open(pathToAccounts);
 
@@ -58,6 +60,8 @@ void fileForRead() {
 
 	fin.close();
 	//Чтение файла в котором хранятся счета - конец
+
+
 	
 	//Для добавления нужных счетов, полученых из файла, в аккаунт нужного пользователя
 	for (auto& accs : accounts) { //Цикл для перебора списка счетов
@@ -275,11 +279,11 @@ void admin_infoAboutUser(int aboutWho) {
 		}
 		//Цикл для поиска нужного пользователя
 		for (auto& p : people) {
-			if (aboutWho == p.number)
-				person = p;
+			if (aboutWho == p.number) {
+				line(70);
+				p.personInfo();
+			}
 		}
-		line(70);
-		person.personInfo();
 		line(70);
 		cout << "1 - Посмотреть информацию по счетам" << endl;
 		cout << "0 - Вернуться назад" << endl;
@@ -555,6 +559,14 @@ void user_menu() {
 		if (!addCheck) 
 			break;
 
+		int a = 0; //Счётчик для нумерации
+		//Перебор массива и присваивание номера пользователю
+		for (auto& temp : people) {
+			temp.number = a + 1;  //Присваивания пользователям номера
+
+			a++; //Увиличение счётчика нумерации
+		}
+
 		line(70);
 		cout << "1 - Личный кабинет" << endl;
 		cout << "2 - Добавить счёт" << endl;
@@ -576,7 +588,7 @@ void user_menu() {
 		else if (answer == 4)
 			user_sendMoney();
 		else if (answer == 0) {
-			if (selection == 2)
+			if (selection == 2 && addCheck)
 				people.push_back(person);
 			break;
 		}
@@ -782,9 +794,6 @@ void user_delPrivateOffice() {
 	system("cls"); //Очистка терминала
 
 	if (answer == 1) { //Если пользователь подтвердил удаление
-
-		
-
 		line(70);
 		cout << "Пользователь был успешно удалён!" << endl;
 		line(70);
