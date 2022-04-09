@@ -7,20 +7,17 @@
 //----------------------------------------------------------------------------------------------
 using namespace std;
 //----------------------------------------------------------------------------------------------
-class BankAccount
-{
-private:
-	string id, purpose, password;
+class BankAccount {
 public:
-	string AccNumber, owner;
+	string AccNumber, owner, id, purpose, password;
 	double money;
 	int number;
 
-	void enterPurpose();
-	void enterPassword();
-	void enterMoney();
+	void enterPurpose();     //Метод для ввода назначения счёта
+	void enterPassword();    //Метод для ввода пароля счёта
+	void enterMoney();       //Метод для указания денег на счету 
 
-	string getPassword();
+	string getPassword();    //Метод для получения пароля
 
 	void idGeneration();     //Метод для генерации айди счёта
 	void numberGeneration(); //Метод для генерации номера счёта

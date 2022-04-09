@@ -29,7 +29,6 @@ void thereIsNoSuchTipeOfAnswer() {
 void fileForRead() {
 	ifstream fin;
 	string pathToPeople = "People.txt";
-	string pathToAccounts = "Accounts.txt";
 
 	//Чтение файла в котором хранятся пользователи - начало
 	fin.open(pathToPeople);
@@ -44,35 +43,6 @@ void fileForRead() {
 
 	fin.close();
 	//Чтение файла в котором хранятся пользователи - конец
-
-
-
-	//Чтение файла в котором хранятся счета - начало
-	fin.open(pathToAccounts);
-
-	if (fin.is_open()) {
-		while (fin.read((char*)&bankAcc, sizeof(BankAccount))) {
-			accounts.push_back(bankAcc);
-		}
-	}
-	else
-		cout << "File wasn't opened!" << endl;
-
-	fin.close();
-	//Чтение файла в котором хранятся счета - конец
-
-
-	
-	//Для добавления нужных счетов, полученых из файла, в аккаунт нужного пользователя
-	for (auto& accs : accounts) { //Цикл для перебора списка счетов
-		for (auto& pers : people) { //Цикл для перебора списка пользователей
-			for (auto& nums : pers.vecForNums) { //Цикл для перебора списка номеров счетов пользователя
-				//Если номер счета совпал с номером счёта пользователя - добавление этого счёта в акк
-				if (accs.AccNumber == nums) 
-					pers.personAccs.push_back(accs);
-			}
-		}
-	}
 }
 
 void startMenu() {
@@ -112,13 +82,15 @@ void startMenu() {
 void fileForWrite() {
 	ofstream fout;
 	string pathToPeople = "People.txt";
-	string pathToAccounts = "Accounts.txt";
+
+	//Затирка данных, которые касаются счетов пользователя
+	for (auto& p : people) {
+		p.personAccs.clear();
+		p.count = 0;
+	}
 
 	//Открытие файла в котором хранятся пользователи, для затирки данных
 	fout.open(pathToPeople, ofstream::trunc);
-	fout.close();
-	//Открытие файла в котором хранятся счета, для затирки данных
-	fout.open(pathToAccounts, ofstream::trunc);
 	fout.close();
 
 	//Запись в файл в котором хранятся пользователи - начало
@@ -135,21 +107,6 @@ void fileForWrite() {
 
 	fout.close();
 	//Запись в файл в котором хранятся пользователи - конец
-
-	//Запись в файл в котором хранятся счета - начало
-	fout.open(pathToAccounts, ofstream::app);
-
-	if (fout.is_open()) {
-		for (auto& temp : accounts) {
-			bankAcc = temp;
-			fout.write((char*)&bankAcc, sizeof(BankAccount));
-		}
-	}
-	else
-		cout << "File wasn't opened!" << endl;
-
-	fout.close();
-	//Запись в файл в котором хранятся счета - конец
 }
 //----------------------------------------------------------------------------------------------------------------
 void admin_passwordCheck() {
@@ -527,6 +484,8 @@ void user_existingAcc() {
 }
 
 void user_newAcc() {
+	person = Person();  //Затирка возможных данных от прошлых изменений
+
 	line(70);
 	person.enterName();
 	person.enterSurname();
@@ -593,15 +552,10 @@ void user_menu() {
 			if (selection == 2 && addCheck)
 				people.push_back(person);
 			//Обновление данных в общем списке про конкретного пользователя
-			if (addCheck) {
+			if (selection == 1 && addCheck) {
 				for (auto& p : people) {
 					if (Nik == p.nik) {
-						p.count = person.count;
-						p.name = person.name;
-						p.surname = person.surname;
-						p.age = person.age;
-						p.nik = person.nik;
-						p.password = person.password;
+						p = person;
 					}
 				}
 			}
@@ -850,7 +804,6 @@ void user_addBankAccount() {
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
 
-		person.vecForNums.push_back(bankAcc.AccNumber); //Добавление номера в вектор для номеров
 		person.personAccs.push_back(bankAcc);           //Добавление счёта в список счетов пользователя
 		accounts.push_back(bankAcc);                    //Добавление счёта в ощий список счетов
 	}
@@ -896,11 +849,9 @@ void user_delBankAccount() {
 			person.count--; //Уменшаем счётчик количества счетов пользователя
 			
 			int index = whoDelete - 1;
-			auto iter1 = person.vecForNums.begin() + index;
-			auto iter2 = person.personAccs.begin() + index;
+			auto iter = person.personAccs.begin() + index;
 
-			person.vecForNums.erase(iter1); //Удаление определённого номера счёта из списка номеров
-			person.personAccs.erase(iter2); //Удаление счёта из списка счетов пользователя
+			person.personAccs.erase(iter); //Удаление счёта из списка счетов пользователя
 
 			line(70);
 			cout << "Этот счёт был успешно удалён!" << endl;

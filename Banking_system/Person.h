@@ -16,7 +16,6 @@ public:
 	int age, number, count;
 
 	vector<BankAccount> personAccs; //¬ектор дл€ хранени€ счетов пользовател€
-	vector<string> vecForNums;      //¬ектор дл€ хранени€ номеров счетов пользовател€
 
 	Person();            // онструктор по умолчанию
 
