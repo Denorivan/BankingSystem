@@ -142,11 +142,13 @@
     <ClCompile Include="Funcs.cpp" />
     <ClCompile Include="BankAccount.cpp" />
     <ClCompile Include="Banking_system.cpp" />
+    <ClCompile Include="Payment.cpp" />
     <ClCompile Include="Person.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Funcs.h" />
     <ClInclude Include="BankAccount.h" />
+    <ClInclude Include="Payment.h" />
     <ClInclude Include="Person.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
