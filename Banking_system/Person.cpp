@@ -15,6 +15,10 @@ void Person::enterSurname() {
 	cout << "Введите фамилию: ";
 	cin >> surname;
 }
+void Person::enterPatronymic() {
+	cout << "Введите отчество: ";
+	cin >> patronymic;
+}
 void Person::enterAge() {
 	cout << "Укажите возраст: ";
 	cin >> age;
@@ -35,13 +39,14 @@ string Person::getPassword() { return password; }
 void Person::personInfo() {
 	cout << "Имя: " << name << endl;
 	cout << "Фамилия: " << surname << endl;
+	cout << "Отчество: " << patronymic << endl;
 	cout << "Возраст: " << age << endl;
 	cout << "Никнейм: " << nik << endl;
 	cout << "Количество счетов: " << count << endl;
 }
 
 ostream& operator<< (ostream& out, Person& person) {
-	out << person.number << ". " << person.surname << " " << person.name;
+	out << person.number << ". " << person.surname << " " << person.name << " " << person.patronymic;
 	return out;
 }
 //----------------------------------------------------------------------------------------------
