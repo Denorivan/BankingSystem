@@ -489,6 +489,7 @@ void user_newAcc() {
 	line(70);
 	person.enterName();
 	person.enterSurname();
+	person.enterPatronymic();
 	person.enterAge();
 	system("cls"); //Очистка терминала
 	line(70);
@@ -548,12 +549,20 @@ void user_menu() {
 		else if (answer == 4)
 			user_sendMoney();
 		else if (answer == 0) {
-			//Добавление пользователя в общий список
-			if (selection == 2 && addCheck)
+			//Если вход был нового пользователя
+			if (selection == 2 && addCheck) {
+				//Добавление пользователя в общий список
 				people.push_back(person);
-			//Обновление данных в общем списке про конкретного пользователя
+				//Добавление счетов пользователя в общий список
+				for (auto& temp : person.personAccs) {
+					accounts.push_back(temp);
+				}
+			}
+			//Если вход был существующего пользователя
 			if (selection == 1 && addCheck) {
+				//Цикл для перебора вектора пользователей
 				for (auto& p : people) {
+					//Если совпадение по нику - обновление данных про пользователя
 					if (Nik == p.nik) {
 						p = person;
 					}
@@ -629,9 +638,10 @@ void user_chengeInfoAboutUser() {
 	line(70);
 	cout << "1 - Имя" << endl;
 	cout << "2 - Фамилия" << endl;
-	cout << "3 - Возраст" << endl;
-	cout << "4 - Никнейм" << endl;
-	cout << "5 - Пароль" << endl;
+	cout << "3 - Отчество" << endl;
+	cout << "4 - Возраст" << endl;
+	cout << "5 - Никнейм" << endl;
+	cout << "6 - Пароль" << endl;
 	line(70);
 	cout << "Ваш выбор: ";
 	cin >> answer;
@@ -643,11 +653,13 @@ void user_chengeInfoAboutUser() {
 		break;
 	case 2: person.enterSurname();
 		break;
-	case 3: person.enterAge();
+	case 3: person.enterPatronymic();
 		break;
-	case 4: person.enterNik();
+	case 4: person.enterAge();
 		break;
-	case 5: person.enterPassword();
+	case 5: person.enterNik();
+		break;
+	case 6: person.enterPassword();
 		break;
 	default: thereIsNoSuchTipeOfAnswer();
 	}
@@ -687,8 +699,10 @@ void user_infoAboutBankAccount() {
 		line(70);
 		//Перебор вектора и поиск нужного счета
 		for (auto& temp : person.personAccs) {
-			if (temp.number == aboutWhich)
+			if (temp.number == aboutWhich) {
 				temp.bankAccountInfo();
+				bankAcc = temp;
+			}
 		}
 		line(70);
 		cout << "1 - Изменить информацию" << endl;
@@ -699,8 +713,10 @@ void user_infoAboutBankAccount() {
 
 		system("cls");//Очистка терминал
 
-		if (answer == 1)
+		if (answer == 1) {
 			user_chengeInfoAboutBankAccount(aboutWhich);
+			break;
+		}
 		else if (answer == 0)
 			break;
 		else
@@ -710,15 +726,6 @@ void user_infoAboutBankAccount() {
 
 void user_chengeInfoAboutBankAccount(int aboutWhich) {
 	int answer;
-
-	//Перебор вектора и поиск нужного счета в общем списке счетов
-	int a = 0; //Счётчик для нумерации
-	for (auto& temp : accounts) {
-		temp.number = a + 1; //Присваивание счетам общего списка номера
-		if (temp.number == aboutWhich)
-			bankAcc = temp;
-		a++; //Увеличение счётчика
-	}
 
 	line(70);
 	cout << "Что вы хотите поменять?" << endl;
@@ -743,6 +750,17 @@ void user_chengeInfoAboutBankAccount(int aboutWhich) {
 	case 4: bankAcc.enterPassword();
 		break;
 	default: thereIsNoSuchTipeOfAnswer();
+	}
+
+	//Перебор вектора и поиск нужного счета в общем списке счетов
+	for (auto temp : person.personAccs) {
+		if (temp.number == aboutWhich) {
+			int index = aboutWhich - 1;
+			auto iter = person.personAccs.begin() + index;
+			person.personAccs.erase(iter);
+
+			person.personAccs.push_back(bankAcc);
+		}
 	}
 
 	Sleep(2000);   //Задержка 2 секунды
@@ -794,7 +812,7 @@ void user_addBankAccount() {
 	else {
 		person.count++; //Увеличиваем счётчик количества счетов пользователя
 		line(70);
-		bankAcc.owner = person.surname + " " + person.name;
+		bankAcc.owner = person.surname + " " + person.name + " " + person.patronymic;
 		bankAcc.enterPurpose();
 		bankAcc.enterMoney();
 		bankAcc.enterPassword();
@@ -804,8 +822,7 @@ void user_addBankAccount() {
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
 
-		person.personAccs.push_back(bankAcc);           //Добавление счёта в список счетов пользователя
-		accounts.push_back(bankAcc);                    //Добавление счёта в ощий список счетов
+		person.personAccs.push_back(bankAcc);//Добавление счёта в список счетов пользователя
 	}
 }
 
@@ -1064,10 +1081,10 @@ void user_sendMoneyToOtherAcc() {
 			if (temp.number == firstAcc)
 				if (sum > temp.money) {
 					checkMoney = false;
-					line(35);
+					line(70);
 					cout << "Ошибка! Операция отменена!" << endl;
-					cout << "Сумма, которую вы ввели, привышает\nсумму, которая есть на вашем счету!" << endl;
-					line(35);
+					cout << "Сумма, которую вы ввели, привышает сумму, которая есть на вашем счету!" << endl;
+					line(70);
 					Sleep(3000);  //Задержка 3 секунды
 					system("cls");//Очистка терминала
 					break;
@@ -1080,7 +1097,7 @@ void user_sendMoneyToOtherAcc() {
 		for (auto& temp : accounts) {
 			//Поиск счёта на который переводить
 			if (temp.AccNumber == secondAcc)
-				temp.money += sum;
+				temp.money += sum;				
 		}
 
 		if (checkMoney == false)
