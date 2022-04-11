@@ -2,6 +2,13 @@
 //----------------------------------------------------------------------------------------------
 using namespace std;
 //----------------------------------------------------------------------------------------------
+BankAccount::BankAccount() {
+	AccNumber = owner = id = purpose = password = "";
+	money = number = 0;
+	transactions1.clear();
+	transactions2.clear();
+}
+
 void BankAccount::enterPurpose() {
 	cout << "Укажите назначение счёта: ";
 	cin.ignore(32767, '\n'); //Игнорируем символы перевода строки "\n" во входящем потоке

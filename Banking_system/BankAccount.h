@@ -4,6 +4,9 @@
 #include <Windows.h>
 #include <ctime>
 #include <string>
+#include <vector>
+
+#include "Payment.h"
 //----------------------------------------------------------------------------------------------
 using namespace std;
 //----------------------------------------------------------------------------------------------
@@ -12,6 +15,11 @@ public:
 	string AccNumber, owner, id, purpose, password;
 	double money;
 	int number;
+
+	vector<Payment> transactions1; //Вектор для хранения транзакций между своими счетами
+	vector<Payment> transactions2; //Вектор для хранения транзакций между счетами других пользователей
+
+	BankAccount();           //Конструктор по умолчанию
 
 	void enterPurpose();     //Метод для ввода назначения счёта
 	void enterPassword();    //Метод для ввода пароля счёта

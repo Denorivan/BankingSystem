@@ -6,6 +6,7 @@ vector<Person> people;
 Person person;
 vector<BankAccount> accounts;
 BankAccount bankAcc;
+Payment payment;
 //----------------------------------------------------------------------------------------------------------------
 void line(int a) {
 	HANDLE color;
@@ -22,8 +23,8 @@ void thereIsNoSuchTipeOfAnswer() {
 	cout << "Такого ответа нет!" << endl;
 	cout << "Проверьте и попробуйте ещё раз" << endl;
 	line(70);
-	Sleep(3000);
-	system("cls");
+	Sleep(3000);  //Задержка 3 секунды
+	system("cls");//Очистка терминала
 }
 //----------------------------------------------------------------------------------------------------------------
 void fileForRead() {
@@ -291,12 +292,16 @@ void admin_infoAboutBankAccount(int aboutWhich) {
 			break;
 		}
 		line(70);
+		bankAcc = BankAccount();
 		//Перебор вектора и поиск нужного счета
 		for (auto& temp : person.personAccs) {
-			if (temp.number == aboutWhich)
+			if (temp.number == aboutWhich) {
 				temp.bankAccountInfo();
+				bankAcc = temp;
+			}
 		}
 		line(70);
+		cout << "1 - Посмотреть транзакции счёта" << endl;
 		cout << "0 - Вернуться назад" << endl;
 		line(70);
 		cout << "Ваш выбор: ";
@@ -304,7 +309,9 @@ void admin_infoAboutBankAccount(int aboutWhich) {
 
 		system("cls");//Очистка терминал
 
-		if (answer == 0)
+		if (answer == 1)
+			user_infoAboutTransaction();
+		else if (answer == 0)
 			break;
 		else
 			thereIsNoSuchTipeOfAnswer();
@@ -697,6 +704,7 @@ void user_infoAboutBankAccount() {
 			break;
 		}
 		line(70);
+		bankAcc = BankAccount();
 		//Перебор вектора и поиск нужного счета
 		for (auto& temp : person.personAccs) {
 			if (temp.number == aboutWhich) {
@@ -706,6 +714,7 @@ void user_infoAboutBankAccount() {
 		}
 		line(70);
 		cout << "1 - Изменить информацию" << endl;
+		cout << "2 - Посмотреть транзакции счёта" << endl;
 		cout << "0 - Вернуться назад" << endl;
 		line(70);
 		cout << "Ваш выбор: ";
@@ -717,10 +726,137 @@ void user_infoAboutBankAccount() {
 			user_chengeInfoAboutBankAccount(aboutWhich);
 			break;
 		}
+		else if (answer == 2) {
+			if (bankAcc.transactions1.empty() && bankAcc.transactions2.empty()) {
+				line(70);
+				cout << "Список транзакций у этого счёта пуст!" << endl;
+				line(70);
+				Sleep(3000);  //Задержка 3 секунды
+				system("cls");//Очистка терминала
+				break;
+			}
+			else {
+				user_infoAboutTransaction();
+				break;
+			}
+		}
 		else if (answer == 0)
 			break;
 		else
 			thereIsNoSuchTipeOfAnswer();
+	}
+}
+
+void user_infoAboutTransaction() {
+	for (;;) {
+		int answer, choise;
+
+		line(70);
+		cout << "1 - Транзакции между своими счетами" << endl;
+		cout << "2 - Транзакции между другими счетами" << endl;
+		line(70);
+		cout << "Ваш выбор: ";
+		cin >> choise;
+		system("cls"); //Очистка терминала
+
+		if (choise == 1) {
+			//Если список ещё пустой
+			if (bankAcc.transactions1.empty()) {
+				line(70);
+				cout << "Список транзакциий между персональными счетами пуст!" << endl;
+				line(70);
+				Sleep(3000);  //Задержка 3 секунды
+				system("cls");//Очистка терминала
+				break;
+			}
+
+			line(70);
+			int a = 0; //Счётчик для нумерации
+			//Перебор вектора и вывод списка транзакций
+			for (auto& temp : bankAcc.transactions1) {
+				temp.number = a + 1;  //Присваивание транзакции номера
+				cout << temp << endl; //Вывод название транзакции
+
+				a++; //Увиличение счётчика нумерации
+			}
+			line(70);
+			cout << "Выберите номер транзакции\nпро которую хотите увидеть информацию: ";
+			cin >> answer;
+			system("cls"); //Очистка терминала
+
+			//Проверка на правильность номера
+			if (answer < 1 || answer > bankAcc.transactions1.size()) {
+				thereIsNoSuchTipeOfAnswer();
+				break;
+			}
+
+			line(70);
+			for (auto& temp : bankAcc.transactions1) {
+				//Поиск нужной транзакции
+				if (temp.number == answer)
+					temp.printInfo1();
+			}
+		}
+		else if (choise == 2) {
+			//Если список ещё пустой
+			if (bankAcc.transactions2.empty()) {
+				line(70);
+				cout << "Список транзакциий между счетами других пользователей пуст!" << endl;
+				line(70);
+				Sleep(3000);  //Задержка 3 секунды
+				system("cls");//Очистка терминала
+				break;
+			}
+
+			line(70);
+			int a = 0; //Счётчик для нумерации
+			//Перебор вектора и вывод списка транзакций
+			for (auto& temp : bankAcc.transactions2) {
+				temp.number = a + 1;  //Присваивание транзакции номера
+				cout << temp << endl; //Вывод название транзакции
+
+				a++; //Увиличение счётчика нумерации
+			}
+			line(70);
+			cout << "Выберите номер транзакции\nпро которую хотите увидеть информацию: ";
+			cin >> answer;
+			system("cls"); //Очистка терминала
+
+			//Проверка на правильность номера
+			if (answer < 1 || answer > bankAcc.transactions2.size()) {
+				thereIsNoSuchTipeOfAnswer();
+				break;
+			}
+
+			line(70);
+			for (auto& temp : bankAcc.transactions2) {
+				//Поиск нужной транзакции
+				if (temp.number == answer)
+					temp.printInfo2();
+			}
+		}
+		else {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
+		line(70);
+		cout << "0 - Вернуться назад" << endl;
+		line(70);
+		cout << "Ваш выбор: ";
+		cin >> answer;
+		system("cls"); //Очистка терминала
+
+		if (answer == 0)
+			break;
+		else {
+			thereIsNoSuchTipeOfAnswer();
+			line(70);
+			cout << "\t\t\tВозврат назад!" << endl;
+			line(70);
+			Sleep(2000);  //Задержка 2 секунды
+			system("cls");//Очистка терминала
+			break;
+		}
 	}
 }
 
@@ -823,6 +959,7 @@ void user_addBankAccount() {
 		system("cls");//Очистка терминала
 
 		person.personAccs.push_back(bankAcc);//Добавление счёта в список счетов пользователя
+		accounts.push_back(bankAcc);         //Добавление счёта в список счтеов
 	}
 }
 
@@ -996,23 +1133,39 @@ void user_sendMoneyToOwnAcc() {
 		//Цикл для перебора вектора счетов пользователя
 		for (auto& temp : person.personAccs) {
 			//Проверка на наличие суммы, указаной выше
-			if (temp.number == firstAcc)
+			if (temp.number == firstAcc) {
 				if (sum > temp.money) {
-				checkMoney = false;
-				line(35);
-				cout << "Ошибка! Операция отменена!" << endl;
-				cout << "Сумма, которую вы ввели, превышает\nсумму, которая есть на вашем счету!" << endl;
-				line(35);
-				Sleep(5000);  //Задержка 5 секунд
-				system("cls");//Очистка терминала
-				break;
+					checkMoney = false;
+					line(70);
+					cout << "Ошибка! Операция отменена!" << endl;
+					cout << "Сумма, которую вы ввели, превышает сумму, которая есть на вашем счету!" << endl;
+					line(70);
+					Sleep(5000);  //Задержка 5 секунд
+					system("cls");//Очистка терминала
+					break;
+				}
 			}
-			//Поиск счёта с которого переводить
-			if (temp.number == firstAcc)
-				temp.money -= sum;
-			//Поиск счёта на который переводить
-			if (temp.number == secondAcc)
-				temp.money += sum;
+			//Поиск счетов с которого переводить и на который переводить
+			if (temp.number == firstAcc || temp.number == secondAcc) {
+				if (temp.number == firstAcc) { //Первый счёт
+					temp.money -= sum;
+
+					payment.firstAcc = temp.purpose;
+					payment.money = sum;
+					line(70);
+					payment.enterPaymentName();
+				}
+				else { //Второй счёт
+					temp.money += sum;
+
+					payment.secondAcc = temp.purpose;
+				}
+			}
+		}
+		//Сохранение платежей на два счёта
+		for (auto& temp : person.personAccs) {
+			if (temp.number == firstAcc || temp.number == secondAcc)
+				temp.transactions1.push_back(payment);
 		}
 
 		if (checkMoney == false)
@@ -1090,14 +1243,33 @@ void user_sendMoneyToOtherAcc() {
 					break;
 				}
 			//Поиск счёта с которого переводить
-			if (temp.number == firstAcc)
+			if (temp.number == firstAcc) {
 				temp.money -= sum;
+
+				payment.sender = temp.owner;
+				payment.money = sum;
+				line(70);
+				payment.enterPaymentName();
+			}
 		}
 		//Цикл для перебора вектора счетов
 		for (auto& temp : accounts) {
 			//Поиск счёта на который переводить
+			if (temp.AccNumber == secondAcc) {
+				temp.money += sum;
+
+				payment.recipient = temp.owner;
+			}
+		}
+		//Добавление платежа в первый счёт
+		for (auto& temp : person.personAccs) {
+			if (temp.number == firstAcc)
+				temp.transactions2.push_back(payment);
+		}
+		//Добавление платежа во втоорой счёт
+		for (auto& temp : accounts) {
 			if (temp.AccNumber == secondAcc)
-				temp.money += sum;				
+				temp.transactions2.push_back(payment);
 		}
 
 		if (checkMoney == false)

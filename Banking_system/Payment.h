@@ -9,12 +9,18 @@ using namespace std;
 class Payment
 {
 public:
-	string recipient, sender, paymentName;
-	double money;
+	string firstAcc, secondAcc; //Переменные если пользователь переводит на свой счёт
+	string recipient, sender;   //Переменные если польздователь переводит на чужой счёт
+	string paymentName;         //Переменная для названия перевода
+	double money;               //Переменная для указания суммы перевода
+	int number;                 //Переменная для номера транзакции
 
-	Payment();              //Конструктор по умолчанию
+	Payment();                  //Конструктор по умолчанию
 
-	void enterPaymentName();//Метод для ввода имени платежа
-	void printInfo();       //Метод для вывода информации о платеже 
+	void enterPaymentName();    //Метод для ввода имени платежа
+	void printInfo1();          //Метод для вывода информации о переводе на свой счёт
+	void printInfo2();          //Метод для вывода информации о переводе на другой счёт 
+	//------ Дружеский метод для перегрузки опертаора вывода ------
+	friend ostream& operator<< (ostream& out, Payment& pay);
 };
 //----------------------------------------------------------------------------------------------

@@ -9,6 +9,7 @@
 
 #include "Person.h"
 #include "BankAccount.h"
+#include "Payment.h"
 //---------------------------------------------------------------------------------------------------------------
 void line(int a);                //Функция для вывода линии
 void thereIsNoSuchTipeOfAnswer();//Функция для вывода информации про то если был указан неверный ответ
@@ -32,6 +33,7 @@ void user_privateOffice();        //Функция для личного кабинета пользователя
 void user_infoAboutUser();        //Функция для вывода инфорамации про пользователя                
 void user_chengeInfoAboutUser();  //Функция для изменения информации про пользователя
 void user_infoAboutBankAccount(); //Функция для вывода информации про счета пользователя
+void user_infoAboutTransaction(); //Функция для вывода информации про транзакции счёта
 void user_chengeInfoAboutBankAccount(int aboutWhich); //Функция для изменения информации про выбранный счёт
 void user_delPrivateOffice();     //Функция для удаления личного кабинета и аккаунта пользователя
 void user_addBankAccount();       //Функция для добавления счёта
