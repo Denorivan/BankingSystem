@@ -566,10 +566,6 @@ void user_menu() {
 			if (selection == 2 && addCheck) {
 				//Добавление пользователя в общий список
 				people.push_back(person);
-				//Добавление счетов пользователя в общий список
-				for (auto& temp : person.personAccs) {
-					accounts.push_back(temp);
-				}
 			}
 			//Если вход был существующего пользователя
 			if (selection == 1 && addCheck) {
@@ -581,6 +577,7 @@ void user_menu() {
 					}
 				}
 			}
+			break;
 		}
 		else
 			thereIsNoSuchTipeOfAnswer();
@@ -900,14 +897,20 @@ void user_chengeInfoAboutBankAccount(int aboutWhich) {
 	default: thereIsNoSuchTipeOfAnswer();
 	}
 
-	//Перебор вектора и поиск нужного счета в общем списке счетов
+	//Перебор вектора счетов пользователя
 	for (auto temp : person.personAccs) {
+		//Поиск нужного счёта
 		if (temp.number == aboutWhich) {
 			int index = aboutWhich - 1;
 			auto iter = person.personAccs.begin() + index;
 			person.personAccs.erase(iter);
 
 			person.personAccs.push_back(bankAcc);
+			//Преребор вектора счетов
+			for (auto& accs : accounts) {
+				if (accs.AccNumber == temp.AccNumber)
+					accs = bankAcc;
+			}
 		}
 	}
 
