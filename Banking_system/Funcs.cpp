@@ -386,9 +386,10 @@ void admin_delUser() {
 	}
 }
 //----------------------------------------------------------------------------------------------------------------
-bool addCheck = true; //Переменная для проверки добавлять ли пользователя в общий список
-int selection;        //Переменая для проверки новый ли пользователь или уже существующий
-string Nik;           //Переменая для входа и проверки для обновления данных
+bool addCheck = true;  //Переменная для проверки добавлять ли пользователя в общий список
+bool sendCheck = false;//Переменная для проверки из какого списка смотреть информацию
+int selection;         //Переменая для проверки новый ли пользователь или уже существующий
+string Nik;            //Переменая для входа и проверки для обновления данных
 
 void user_accSelection() {
 	for (;;) {
@@ -580,7 +581,6 @@ void user_menu() {
 					}
 				}
 			}
-			break;
 		}
 		else
 			thereIsNoSuchTipeOfAnswer();
@@ -709,17 +709,17 @@ void user_infoAboutBankAccount() {
 			break;
 		}
 		line(70);
-		bankAcc = BankAccount();
-		//Перебор вектора и поиск нужного счета
+		bankAcc = BankAccount();  
+		//Перебор вектора счетов пользователя
 		for (auto& temp : person.personAccs) {
-			//Поиск нужного счёта по номеру из счетов пользователя
+			//Поиск нужного счёта по номеру
 			if (temp.number == aboutWhich) {
 				//Перебор вектора счетов
-				for (auto& temp2 : accounts) {
-					//Поиск найденого счёта в общем списке счетов
-					if (temp.AccNumber == temp2.AccNumber) {
-						temp2.bankAccountInfo();
-						bankAcc = temp2;
+				for (auto& accs : accounts) {
+					//Поиск нужного счёта и вывод информации
+					if (accs.AccNumber == temp.AccNumber) {
+						accs.bankAccountInfo();
+						bankAcc = accs;
 					}
 				}
 			}
@@ -1167,18 +1167,37 @@ void user_sendMoneyToOwnAcc() {
 					payment.balance = temp.money;
 					line(70);
 					payment.enterPaymentName();
+					//Перебор списка счетов
+					for (auto& accs : accounts) {
+						//Поиск нужного счёта
+						if (accs.AccNumber == temp.AccNumber)
+							accs.money -= sum;
+					}
 				}
 				else { //Второй счёт
 					temp.money += sum;
 
 					payment.secondAcc = temp.purpose;
+					//Перебор списка счетов
+					for (auto& accs : accounts) {
+						//Поиск нужного счёта
+						if (accs.AccNumber == temp.AccNumber)
+							accs.money += sum;
+					}
 				}
 			}
 		}
 		//Сохранение платежей на два счёта
 		for (auto& temp : person.personAccs) {
-			if (temp.number == firstAcc || temp.number == secondAcc)
-				temp.transactions1.push_back(payment);
+			if (temp.number == firstAcc || temp.number == secondAcc) {
+				//Перебор вектора счетов
+				for (auto& accs : accounts) {
+					//Поиск нужного счёта и добавление транзакции
+					if (accs.AccNumber == temp.AccNumber) {
+						accs.transactions1.push_back(payment);
+					}
+				}
+			}
 		}
 
 		if (checkMoney == false)
@@ -1264,26 +1283,34 @@ void user_sendMoneyToOtherAcc() {
 				payment.balance = temp.money;
 				line(70);
 				payment.enterPaymentName();
-				//Обновление данных в общем спмске счетов
-				for (auto& temp2 : accounts) {
-					if (temp.AccNumber == temp2.AccNumber)
-						temp2.money -= sum;
+				//Перебор списка счетов
+				for (auto& accs : accounts) {
+					//Поиск нужного счёта
+					if (accs.AccNumber == temp.AccNumber)
+						accs.money -= sum;
 				}
 			}
 		}
-		//Цикл для перебора вектора счетов
+		//Перебор вектора счетов 
 		for (auto& temp : accounts) {
-			//Поиск счёта на который переводить
+			//Поиск счёта на котрый переводить
 			if (temp.AccNumber == secondAcc) {
 				temp.money += sum;
-
 				payment.recipient = temp.owner;
 			}
 		}
 		//Добавление платежа в первый счёт
 		for (auto& temp : person.personAccs) {
-			if (temp.number == firstAcc)
-				temp.transactions2.push_back(payment);
+			//Поиск нужного счёта
+			if (temp.number == firstAcc) {
+				//Перебор вектора счетов
+				for (auto& accs : accounts) {
+					//Поиск нужного счёта и добавление транзакции
+					if (accs.AccNumber == temp.AccNumber) {
+						accs.transactions2.push_back(payment);
+					}
+				}
+			}
 		}
 		//Добавление платежа во втоорой счёт
 		for (auto& temp : accounts) {
