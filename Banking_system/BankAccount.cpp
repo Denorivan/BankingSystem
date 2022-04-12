@@ -75,7 +75,7 @@ void BankAccount::numberGeneration() {
 	}
 }
 void BankAccount::bankAccountInfo() {
-	cout << "Денег на счету: " << money << endl;
+	cout << "Денег на счету: " << money << " USD" << endl;
 	cout << "Номер счёта: " << AccNumber << endl;
 	cout << "Id счёта: " << id << endl;
 	cout << "Владелец счёта: " << owner << endl;
