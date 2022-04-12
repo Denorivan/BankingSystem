@@ -235,11 +235,14 @@ void admin_infoAboutUser(int aboutWho) {
 			system("cls");//Очистка терминала
 			break;
 		}
+		person = Person();
 		//Цикл для поиска нужного пользователя
 		for (auto& p : people) {
 			if (aboutWho == p.number) {
 				line(70);
 				p.personInfo();
+
+				person = p;
 			}
 		}
 		line(70);
@@ -252,7 +255,7 @@ void admin_infoAboutUser(int aboutWho) {
 		system("cls");
 
 		if (answer == 1)
-			admin_infoAboutBankAccount(aboutWho);
+			admin_infoAboutBankAccount();
 		else if (answer == 0)
 			break;
 		else
@@ -260,9 +263,9 @@ void admin_infoAboutUser(int aboutWho) {
 	}
 }
 
-void admin_infoAboutBankAccount(int aboutWhich) {
+void admin_infoAboutBankAccount() {
 	for (;;) {
-		int answer;
+		int answer, aboutWhich;
 
 		if (person.personAccs.empty()) {
 			line(70);
@@ -309,8 +312,10 @@ void admin_infoAboutBankAccount(int aboutWhich) {
 
 		system("cls");//Очистка терминал
 
-		if (answer == 1)
+		if (answer == 1) {
 			user_infoAboutTransaction();
+			break;
+		}
 		else if (answer == 0)
 			break;
 		else
@@ -707,9 +712,16 @@ void user_infoAboutBankAccount() {
 		bankAcc = BankAccount();
 		//Перебор вектора и поиск нужного счета
 		for (auto& temp : person.personAccs) {
+			//Поиск нужного счёта по номеру из счетов пользователя
 			if (temp.number == aboutWhich) {
-				temp.bankAccountInfo();
-				bankAcc = temp;
+				//Перебор вектора счетов
+				for (auto& temp2 : accounts) {
+					//Поиск найденого счёта в общем списке счетов
+					if (temp.AccNumber == temp2.AccNumber) {
+						temp2.bankAccountInfo();
+						bankAcc = temp2;
+					}
+				}
 			}
 		}
 		line(70);
@@ -1152,6 +1164,7 @@ void user_sendMoneyToOwnAcc() {
 
 					payment.firstAcc = temp.purpose;
 					payment.money = sum;
+					payment.balance = temp.money;
 					line(70);
 					payment.enterPaymentName();
 				}
@@ -1248,8 +1261,14 @@ void user_sendMoneyToOtherAcc() {
 
 				payment.sender = temp.owner;
 				payment.money = sum;
+				payment.balance = temp.money;
 				line(70);
 				payment.enterPaymentName();
+				//Обновление данных в общем спмске счетов
+				for (auto& temp2 : accounts) {
+					if (temp.AccNumber == temp2.AccNumber)
+						temp2.money -= sum;
+				}
 			}
 		}
 		//Цикл для перебора вектора счетов
