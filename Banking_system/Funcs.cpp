@@ -296,11 +296,18 @@ void admin_infoAboutBankAccount() {
 		}
 		line(70);
 		bankAcc = BankAccount();
-		//Перебор вектора и поиск нужного счета
+		//Перебор вектора счетов пользователя
 		for (auto& temp : person.personAccs) {
+			//Поиск нужного счёта по номеру
 			if (temp.number == aboutWhich) {
-				temp.bankAccountInfo();
-				bankAcc = temp;
+				//Перебор вектора счетов
+				for (auto& accs : accounts) {
+					//Поиск нужного счёта и вывод информации
+					if (accs.AccNumber == temp.AccNumber) {
+						accs.bankAccountInfo();
+						bankAcc = accs;
+					}
+				}
 			}
 		}
 		line(70);
