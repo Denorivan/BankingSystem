@@ -1124,6 +1124,11 @@ void user_sendMoneyToOwnAcc() {
 		cout << "Выберите счёт с которого хотите перевести деньги: ";
 		cin >> firstAcc;
 		system("cls");//Очистка терминал
+		//Проверка на наличие такого номера счёта у пользователя
+		if (firstAcc < 1 || firstAcc > person.personAccs.size()) {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
 
 		line(70);
 		a = 0; //Онуляем счётчик
@@ -1138,7 +1143,12 @@ void user_sendMoneyToOwnAcc() {
 		cout << "Выберите счёт на который хотите перевести деньги: ";
 		cin >> secondAcc;
 		system("cls");//Очистка терминал
-
+		//Проверка на наличие такого номера счёта у пользователя
+		if (secondAcc < 1 || secondAcc > person.personAccs.size()) {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
+		//Проверка на совпадение номеров счёта 
 		if (firstAcc == secondAcc) {
 			line(70);
 			cout << "Ошибка! Операция отменена!" << endl;
@@ -1243,6 +1253,11 @@ void user_sendMoneyToOtherAcc() {
 		cout << "Выберите счёт с которого хотите перевести деньги: ";
 		cin >> firstAcc;
 		system("cls");//Очистка терминал
+		//Проверка на наличие такого номера счёта у пользователя
+		if (firstAcc < 1 || firstAcc > person.personAccs.size()) {
+			thereIsNoSuchTipeOfAnswer();
+			break;
+		}
 
 		line(70);
 		cout << "Введите номер счёта на который хотите перевести деньги:" << endl;
