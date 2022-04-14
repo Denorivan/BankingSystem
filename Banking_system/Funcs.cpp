@@ -20,8 +20,8 @@ void line(int a) {
 
 void thereIsNoSuchTipeOfAnswer() {
 	line(70);
-	cout << "Такого ответа нет!" << endl;
-	cout << "Проверьте и попробуйте ещё раз" << endl;
+	cout << "\t\t\tТакого ответа нет!" << endl;
+	cout << "\t\t Проверьте и попробуйте ещё раз" << endl;
 	line(70);
 	Sleep(3000);  //Задержка 3 секунды
 	system("cls");//Очистка терминала
@@ -72,7 +72,7 @@ void startMenu() {
 			fileForWrite();
 
 			line(70);
-			cout << "Хорошо, до свидания!" << endl;
+			cout << "\t\t\tХорошо, до свидания!" << endl;
 			break;
 		}
 		else
@@ -123,8 +123,8 @@ void admin_passwordCheck() {
 		admin_menu();
 	else {
 		line(70);
-		cout << "Пароль не правильный!" << endl;
-		cout << "Доступ запрещён!" << endl;
+		cout << "\t\t\t Пароль не правильный!" << endl;
+		cout << "\t\t\t   Доступ запрещён!" << endl;
 		line(70);
 		Sleep(3000);
 		system("cls");
@@ -170,7 +170,7 @@ void admin_listOfUsers() {
 
 		if (people.empty()) { //Если список пуст
 			line(70);
-			cout << "Список пользователей пуст!" << endl;
+			cout << "\t\t\tСписок пользователей пуст!" << endl;
 			line(70);
 			Sleep(2500);   //Задержка в 2 секунды
 			system("cls"); //Очистка терминала
@@ -228,8 +228,8 @@ void admin_infoAboutUser(int aboutWho) {
 		//Проверка на правильность ввода номерва пользователя
 		if (aboutWho < 1 || aboutWho > people.size()) {
 			line(70);
-			cout << "Вы ввели неправильный номер!" << endl;
-			cout << "Проверьте и попробуйте ещё раз!" << endl;
+			cout << "\t\t\t  Вы ввели неправильный номер!" << endl;
+			cout << "\t\t\t Проверьте и попробуйте ещё раз!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка в 2 секунды
 			system("cls");//Очистка терминала
@@ -269,7 +269,7 @@ void admin_infoAboutBankAccount() {
 
 		if (person.personAccs.empty()) {
 			line(70);
-			cout << "У этого пользователя ещё нет счетов!" << endl;
+			cout << "\t\tУ этого пользователя ещё нет счетов!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминала
@@ -350,8 +350,8 @@ void admin_delUser() {
 		//Проверка на правильность ввода номерва пользователя
 		if (whoDelete < 1 || whoDelete > people.size()) {
 			line(70);
-			cout << "Вы ввели неправильный номер!" << endl;
-			cout << "Проверьте и попробуйте ещё раз!" << endl;
+			cout << "\t\t\t Вы ввели неправильный номер!" << endl;
+			cout << "\t\t\tПроверьте и попробуйте ещё раз!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка в 2 секунды
 			system("cls");//Очистка терминала
@@ -368,7 +368,7 @@ void admin_delUser() {
 			people.erase(people.begin() + index);
 
 			line(70);
-			cout << "Пользователь был успешно удалён!" << endl;
+			cout << "\t\t\tПользователь был успешно удалён!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка в 2 секунды
 			system("cls");//Очистка терминала
@@ -376,7 +376,7 @@ void admin_delUser() {
 		}
 		else if (answer == 0) { //Если пользователь отменил удаление
 			line(70);
-			cout << "Операция отменена!" << endl;
+			cout << "\t\t\t  Операция отменена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка в 2 секунды
 			system("cls");//Очистка терминала
@@ -384,7 +384,7 @@ void admin_delUser() {
 		}
 		else { //Если пользователь ввёл неправильное число
 			line(70);
-			cout << "Такого ответа нету!\nОперация отменена!" << endl;
+			cout << "\t\t\t Такого ответа нету!\n\t\t\tОперация отменена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка в 2 секунды
 			system("cls");//Очистка терминала
@@ -440,7 +440,7 @@ void user_existingAcc() {
 
 		if (people.empty()) { //Если список пуст
 			line(70);
-			cout << "Список пользователей пуст!" << endl;
+			cout << "\t\t\tСписок пользователей пуст!" << endl;
 			line(70);
 			Sleep(2500);   //Задержка в 2.5 секунды
 			system("cls"); //Очистка терминала
@@ -504,7 +504,7 @@ void user_existingAcc() {
 }
 
 void user_newAcc() {
-	person = Person();  //Затирка возможных данных от прошлых изменений
+	person = Person();  //Затирка возможных данных 
 
 	line(70);
 	person.enterName();
@@ -518,7 +518,7 @@ void user_newAcc() {
 	for (auto& temp : people) {
 		if (temp.getNik() == person.getNik()) {
 			line(70);
-			cout << "Пользователь с таким никнеймом\nуже существует!" << endl;
+			cout << "\t\t Пользователь с таким никнеймом уже существует!" << endl;
 			line(70);
 			Sleep(3000);  //Задержка в 3 секунды
 			system("cls");//Очистка терминала
@@ -688,7 +688,7 @@ void user_infoAboutBankAccount() {
 
 		if (person.personAccs.empty()) {
 			line(70);
-			cout << "У вас ещё нет счетов!" << endl;
+			cout << "\t\t\t У вас ещё нет счетов!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминала
@@ -745,7 +745,7 @@ void user_infoAboutBankAccount() {
 		else if (answer == 2) {
 			if (bankAcc.transactions1.empty() && bankAcc.transactions2.empty()) {
 				line(70);
-				cout << "Список транзакций у этого счёта пуст!" << endl;
+				cout << "\t\t Список транзакций у этого счёта пуст!" << endl;
 				line(70);
 				Sleep(3000);  //Задержка 3 секунды
 				system("cls");//Очистка терминала
@@ -779,7 +779,7 @@ void user_infoAboutTransaction() {
 			//Если список ещё пустой
 			if (bankAcc.transactions1.empty()) {
 				line(70);
-				cout << "Список транзакциий между персональными счетами пуст!" << endl;
+				cout << "\t Список транзакциий между персональными счетами пуст!" << endl;
 				line(70);
 				Sleep(3000);  //Задержка 3 секунды
 				system("cls");//Очистка терминала
@@ -817,7 +817,7 @@ void user_infoAboutTransaction() {
 			//Если список ещё пустой
 			if (bankAcc.transactions2.empty()) {
 				line(70);
-				cout << "Список транзакциий между счетами других пользователей пуст!" << endl;
+				cout << "\t Список транзакциий между счетами других пользователей пуст!" << endl;
 				line(70);
 				Sleep(3000);  //Задержка 3 секунды
 				system("cls");//Очистка терминала
@@ -937,7 +937,7 @@ void user_delPrivateOffice() {
 
 	if (answer == 1) { //Если пользователь подтвердил удаление
 		line(70);
-		cout << "Пользователь был успешно удалён!" << endl;
+		cout << "\t\t Пользователь был успешно удалён!" << endl;
 		line(70);
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
@@ -945,14 +945,14 @@ void user_delPrivateOffice() {
 	}
 	else if (answer == 0) { //Если пользователь отменил удаление
 		line(70);
-		cout << "Операция отменена!" << endl;
+		cout << "\t\t\t Операция отменена!" << endl;
 		line(70);
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
 	}
 	else { //Если пользователь ввёл неправильное число
 		line(70);
-		cout << "Такого ответа нету!\nОперация отменена!" << endl;
+		cout << "\t\t\tТакого ответа нету!\n\t\t\tОперация отменена!" << endl;
 		line(70);
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
@@ -960,9 +960,11 @@ void user_delPrivateOffice() {
 }
 
 void user_addBankAccount() {
+	bankAcc = BankAccount(); //Затирка возможных данных на счету
+
 	if (person.count == 3) {
 		line(70);
-		cout << "У вас уже есть 3 счета, это максимальное количество счетов!" << endl;
+		cout << "\tУ вас уже есть 3 счета, это максимальное количество счетов!" << endl;
 		line(70);
 		Sleep(2000);  //Задержка 2 секунды
 		system("cls");//Очистка терминала
@@ -991,7 +993,7 @@ void user_delBankAccount() {
 
 		if (person.personAccs.empty()) {
 			line(70);
-			cout << "У вас ещё нет счетов!" << endl;
+			cout << "\t\t\t У вас ещё нет счетов!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминала
@@ -1030,7 +1032,7 @@ void user_delBankAccount() {
 			person.personAccs.erase(iter); //Удаление счёта из списка счетов пользователя
 
 			line(70);
-			cout << "Этот счёт был успешно удалён!" << endl;
+			cout << "\t\t\tЭтот счёт был успешно удалён!" << endl;
 			line(70);
 
 			Sleep(2000);   //Задержка 2 секунды
@@ -1041,7 +1043,7 @@ void user_delBankAccount() {
 			system("mode con cols=20 lines=4"); //Устанавливает размер окна
 
 			line(70);
-			cout << "Операция отменена!" << endl;
+			cout << "\t\t\t Операция отменена!" << endl;
 			line(70);
 
 			Sleep(2000);   //Задержка 2 секунды
@@ -1052,7 +1054,7 @@ void user_delBankAccount() {
 			system("mode con cols=20 lines=4"); //Устанавливает размер окна
 
 			line(70);
-			cout << "Такого ответа нету!\nОперация отменена!" << endl;
+			cout << "\t\t\t Такого ответа нету!\n\t\t\tОперация отменена!" << endl;
 			line(70);
 
 			Sleep(2000);   //Задержка 2 секунды
@@ -1068,7 +1070,7 @@ void user_sendMoney() {
 
 		if (person.personAccs.empty()) {
 			line(70);
-			cout << "У вас ещё нет счетов!" << endl;
+			cout << "\t\t\t У вас ещё нет счетов!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминала
@@ -1104,7 +1106,7 @@ void user_sendMoneyToOwnAcc() {
 
 		if (person.personAccs.size() == 1) {
 			line(70);
-			cout << "У вас ещё нет другого счёта!" << endl;
+			cout << "\t\t\tУ вас ещё нет другого счёта!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминала
@@ -1151,8 +1153,8 @@ void user_sendMoneyToOwnAcc() {
 		//Проверка на совпадение номеров счёта 
 		if (firstAcc == secondAcc) {
 			line(70);
-			cout << "Ошибка! Операция отменена!" << endl;
-			cout << "Вы выбрали два одинаковых счёта!" << endl;
+			cout << "\t\t\t   Ошибка! Операция отменена!" << endl;
+			cout << "\t\t\tВы выбрали два одинаковых счёта!" << endl;
 			line(70);
 			Sleep(5000);  //Задержка 5 секунды
 			system("cls");//Очистка терминала
@@ -1169,7 +1171,7 @@ void user_sendMoneyToOwnAcc() {
 				if (sum > temp.money) {
 					checkMoney = false;
 					line(70);
-					cout << "Ошибка! Операция отменена!" << endl;
+					cout << "\t\t\t\t Ошибка! Операция отменена!" << endl;
 					cout << "Сумма, которую вы ввели, превышает сумму, которая есть на вашем счету!" << endl;
 					line(70);
 					Sleep(5000);  //Задержка 5 секунд
@@ -1224,7 +1226,7 @@ void user_sendMoneyToOwnAcc() {
 			break;
 		else {
 			line(70);
-			cout << "Сумма успешно отправлена!" << endl;
+			cout << "\t\t\t Сумма успешно отправлена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминал
@@ -1273,8 +1275,8 @@ void user_sendMoneyToOtherAcc() {
 		}
 		if (check) {
 			line(70);
-			cout << "Ошибка! Операция отменена!" << endl;
-			cout << "Счёта с таким номером нет!" << endl;
+			cout << "\t\t\tОшибка! Операция отменена!" << endl;
+			cout << "\t\t\tСчёта с таким номером нет!" << endl;
 			line(70);
 			Sleep(3000);  //Задержка 3 секунды
 			system("cls");//Очистка терминала
@@ -1292,7 +1294,7 @@ void user_sendMoneyToOtherAcc() {
 				if (sum > temp.money) {
 					checkMoney = false;
 					line(70);
-					cout << "Ошибка! Операция отменена!" << endl;
+					cout << "\t\t\t\t Ошибка! Операция отменена!" << endl;
 					cout << "Сумма, которую вы ввели, привышает сумму, которая есть на вашем счету!" << endl;
 					line(70);
 					Sleep(3000);  //Задержка 3 секунды
@@ -1347,7 +1349,7 @@ void user_sendMoneyToOtherAcc() {
 			break;
 		else {
 			line(70);
-			cout << "Сумма успешно отправлена!" << endl;
+			cout << "\t\t\t Сумма успешно отправлена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминал
