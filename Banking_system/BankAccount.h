@@ -21,11 +21,12 @@ public:
 
 	BankAccount();           //Конструктор по умолчанию
 
+	void setOwner(string n); //Сеттер для владельца счёта
 	void enterPurpose();     //Метод для ввода назначения счёта
 	void enterPassword();    //Метод для ввода пароля счёта
 	void enterMoney();       //Метод для указания денег на счету 
 
-	string getPassword();    //Метод для получения пароля
+	string getPassword();    //Геттер для пароля счёта
 
 	void idGeneration();     //Метод для генерации айди счёта
 	void numberGeneration(); //Метод для генерации номера счёта

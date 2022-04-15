@@ -86,8 +86,7 @@ void fileForWrite() {
 
 	//Затирка данных, которые касаются счетов пользователя
 	for (auto& p : people) {
-		p.personAccs.clear();
-		p.count = 0;
+		p.clearBankAccs();
 	}
 
 	//Открытие файла в котором хранятся пользователи, для затирки данных
@@ -579,7 +578,7 @@ void user_menu() {
 				//Цикл для перебора вектора пользователей
 				for (auto& p : people) {
 					//Если совпадение по нику - обновление данных про пользователя
-					if (Nik == p.nik) {
+					if (Nik == p.getNik()) {
 						p = person;
 					}
 				}
@@ -962,7 +961,7 @@ void user_delPrivateOffice() {
 void user_addBankAccount() {
 	bankAcc = BankAccount(); //Затирка возможных данных на счету
 
-	if (person.count == 3) {
+	if (person.getCount() == 3) {
 		line(70);
 		cout << "\tУ вас уже есть 3 счета, это максимальное количество счетов!" << endl;
 		line(70);
@@ -970,9 +969,9 @@ void user_addBankAccount() {
 		system("cls");//Очистка терминала
 	}
 	else {
-		person.count++; //Увеличиваем счётчик количества счетов пользователя
+		person.countIncrement(); //Увеличиваем счётчик количества счетов пользователя
 		line(70);
-		bankAcc.owner = person.surname + " " + person.name + " " + person.patronymic;
+		bankAcc.setOwner(person.getFullName());
 		bankAcc.enterPurpose();
 		bankAcc.enterMoney();
 		bankAcc.enterPassword();
@@ -1024,7 +1023,7 @@ void user_delBankAccount() {
 		cin >> answer;
 		system("cls"); //Очистка терминала
 		if (answer == 1) { //Если пользователь подтвердил удаление
-			person.count--; //Уменшаем счётчик количества счетов пользователя
+			person.countDicrement(); //Уменшаем счётчик количества счетов пользователя
 			
 			int index = whoDelete - 1;
 			auto iter = person.personAccs.begin() + index;
@@ -1189,6 +1188,7 @@ void user_sendMoneyToOwnAcc() {
 					payment.balance = temp.money;
 					line(70);
 					payment.enterPaymentName();
+					payment.getPaymentTime();
 					//Перебор списка счетов
 					for (auto& accs : accounts) {
 						//Поиск нужного счёта
@@ -1310,6 +1310,7 @@ void user_sendMoneyToOtherAcc() {
 				payment.balance = temp.money;
 				line(70);
 				payment.enterPaymentName();
+				payment.getPaymentTime();
 				//Перебор списка счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта

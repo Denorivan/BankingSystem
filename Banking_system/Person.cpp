@@ -3,7 +3,7 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 Person::Person() {
-	name = surname = nik = password = "";
+	name = surname = nik = password = fullName = "";
 	number = age = count = 0;
 }
 
@@ -18,6 +18,8 @@ void Person::enterSurname() {
 void Person::enterPatronymic() {
 	cout << "Введите отчество: ";
 	cin >> patronymic;
+
+	fullName = surname + " " + name + " " + patronymic;
 }
 void Person::enterAge() {
 	cout << "Укажите возраст: ";
@@ -32,9 +34,19 @@ void Person::enterPassword() {
 	cin >> password;
 }
 
-int Person::getNumber()      { return number; }
-string Person::getNik()      { return nik; }
-string Person::getPassword() { return password; }
+int Person::getNumber()       { return number; }
+int Person::getCount()        { return count; }
+string Person::getNik()       { return nik; }
+string Person::getFullName()  { return fullName; }
+string Person::getPassword()  { return password; }
+
+void Person::countIncrement() { count++; }
+void Person::countDicrement() { count--; }
+
+void Person::clearBankAccs() {
+	personAccs.clear();
+	count = 0;
+}
 
 void Person::personInfo() {
 	cout << "Имя: " << name << endl;

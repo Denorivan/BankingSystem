@@ -11,9 +11,11 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 class Person {
+private:
+	string name, surname, patronymic, nik, password, fullName;
+	int age, count;
 public:
-	string name, surname, patronymic, nik, password;
-	int age, number, count;
+	int number;
 
 	vector<BankAccount> personAccs; //Вектор для хранения счетов пользователя
 
@@ -26,9 +28,15 @@ public:
 	void enterNik();       //Метод для ввода никнейма
 	void enterPassword();  //Метод для ввода пароля
 
-	int getNumber();       //Метод для получения номера пользователя
-	string getNik();       //Метод для получения ника пользователя
-	string getPassword();  //Метод для получения пароля
+	int getNumber();       //Геттер для номера пользователя
+	int getCount();        //Геттер для счётчика счетов пользователя
+	string getNik();       //Геттер для никнейма пользователя
+	string getFullName();  //Геттер для полного имени пользователя
+	string getPassword();  //Геттер для пароля пользователя
+
+	void countIncrement(); //Метод для увелечния счётчика аккаунтов пользователя
+	void countDicrement(); //Метод для уменьшения счётчика аккаунтов пользователя
+	void clearBankAccs();  //Метод для очистки счетов пользователя
 
 	void personInfo();     //Метод для вывода всей информации про пользователя
 	//------ Дружеский метод для перегрузки опертаора вывода ------
