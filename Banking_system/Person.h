@@ -12,8 +12,10 @@ using namespace std;
 //----------------------------------------------------------------------------------------------
 class Person {
 private:
+
 	string name, surname, patronymic, nik, password, fullName;
 	int age, count;
+
 public:
 	int number;
 

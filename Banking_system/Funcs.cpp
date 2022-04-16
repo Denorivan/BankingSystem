@@ -302,7 +302,7 @@ void admin_infoAboutBankAccount() {
 				//Перебор вектора счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта и вывод информации
-					if (accs.AccNumber == temp.AccNumber) {
+					if (accs.getAccNumber() == temp.getAccNumber()) {
 						accs.bankAccountInfo();
 						bankAcc = accs;
 					}
@@ -720,7 +720,7 @@ void user_infoAboutBankAccount() {
 				//Перебор вектора счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта и вывод информации
-					if (accs.AccNumber == temp.AccNumber) {
+					if (accs.getAccNumber() == temp.getAccNumber()) {
 						accs.bankAccountInfo();
 						bankAcc = accs;
 					}
@@ -914,7 +914,7 @@ void user_chengeInfoAboutBankAccount(int aboutWhich) {
 			person.personAccs.push_back(bankAcc);
 			//Преребор вектора счетов
 			for (auto& accs : accounts) {
-				if (accs.AccNumber == temp.AccNumber)
+				if (accs.getAccNumber() == temp.getAccNumber())
 					accs = bankAcc;
 			}
 		}
@@ -1167,7 +1167,7 @@ void user_sendMoneyToOwnAcc() {
 		for (auto& temp : person.personAccs) {
 			//Проверка на наличие суммы, указаной выше
 			if (temp.number == firstAcc) {
-				if (sum > temp.money) {
+				if (sum > temp.getMoney()) {
 					checkMoney = false;
 					line(70);
 					cout << "\t\t\t\t Ошибка! Операция отменена!" << endl;
@@ -1181,30 +1181,30 @@ void user_sendMoneyToOwnAcc() {
 			//Поиск счетов с которого переводить и на который переводить
 			if (temp.number == firstAcc || temp.number == secondAcc) {
 				if (temp.number == firstAcc) { //Первый счёт
-					temp.money -= sum;
+					temp.subMoney(sum);
 
-					payment.firstAcc = temp.purpose;
-					payment.money = sum;
-					payment.balance = temp.money;
+					payment.setFirstAcc(temp.getPurpose());
+					payment.setMoney(sum);
+					payment.setBalance(temp.getMoney());
 					line(70);
 					payment.enterPaymentName();
 					payment.getPaymentTime();
 					//Перебор списка счетов
 					for (auto& accs : accounts) {
 						//Поиск нужного счёта
-						if (accs.AccNumber == temp.AccNumber)
-							accs.money -= sum;
+						if (accs.getAccNumber() == temp.getAccNumber())
+							accs.subMoney(sum);
 					}
 				}
 				else { //Второй счёт
-					temp.money += sum;
+					temp.sumMoney(sum);
 
-					payment.secondAcc = temp.purpose;
+					payment.setSecondAcc(temp.getPurpose());
 					//Перебор списка счетов
 					for (auto& accs : accounts) {
 						//Поиск нужного счёта
-						if (accs.AccNumber == temp.AccNumber)
-							accs.money += sum;
+						if (accs.getAccNumber() == temp.getAccNumber())
+							accs.sumMoney(sum);
 					}
 				}
 			}
@@ -1215,7 +1215,7 @@ void user_sendMoneyToOwnAcc() {
 				//Перебор вектора счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта и добавление транзакции
-					if (accs.AccNumber == temp.AccNumber) {
+					if (accs.getAccNumber() == temp.getAccNumber()) {
 						accs.transactions1.push_back(payment);
 					}
 				}
@@ -1226,7 +1226,7 @@ void user_sendMoneyToOwnAcc() {
 			break;
 		else {
 			line(70);
-			cout << "\t\t\t Сумма успешно отправлена!" << endl;
+			cout << "\t\t\tСумма успешно отправлена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминал
@@ -1270,7 +1270,7 @@ void user_sendMoneyToOtherAcc() {
 		//Проверка на наличие такого номера счёта у других пользователей
 		bool check = true;
 		for (auto& temp : accounts) {
-			if (temp.AccNumber == secondAcc)
+			if (temp.getAccNumber() == secondAcc)
 				check = false;
 		}
 		if (check) {
@@ -1291,7 +1291,7 @@ void user_sendMoneyToOtherAcc() {
 		for (auto& temp : person.personAccs) {
 			//Проверка на наличие суммы, указаной выше
 			if (temp.number == firstAcc)
-				if (sum > temp.money) {
+				if (sum > temp.getMoney()) {
 					checkMoney = false;
 					line(70);
 					cout << "\t\t\t\t Ошибка! Операция отменена!" << endl;
@@ -1303,28 +1303,28 @@ void user_sendMoneyToOtherAcc() {
 				}
 			//Поиск счёта с которого переводить
 			if (temp.number == firstAcc) {
-				temp.money -= sum;
+				temp.subMoney(sum);
 
-				payment.sender = temp.owner;
-				payment.money = sum;
-				payment.balance = temp.money;
+				payment.setSender(temp.getOwner());
+				payment.setMoney(sum);
+				payment.setBalance(temp.getMoney());
 				line(70);
 				payment.enterPaymentName();
 				payment.getPaymentTime();
 				//Перебор списка счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта
-					if (accs.AccNumber == temp.AccNumber)
-						accs.money -= sum;
+					if (accs.getAccNumber() == temp.getAccNumber())
+						accs.subMoney(sum);
 				}
 			}
 		}
 		//Перебор вектора счетов 
 		for (auto& temp : accounts) {
 			//Поиск счёта на котрый переводить
-			if (temp.AccNumber == secondAcc) {
-				temp.money += sum;
-				payment.recipient = temp.owner;
+			if (temp.getAccNumber() == secondAcc) {
+				temp.sumMoney(sum);
+				payment.setResipient(temp.getOwner());
 			}
 		}
 		//Добавление платежа в первый счёт
@@ -1334,7 +1334,7 @@ void user_sendMoneyToOtherAcc() {
 				//Перебор вектора счетов
 				for (auto& accs : accounts) {
 					//Поиск нужного счёта и добавление транзакции
-					if (accs.AccNumber == temp.AccNumber) {
+					if (accs.getAccNumber() == temp.getAccNumber()) {
 						accs.transactions2.push_back(payment);
 					}
 				}
@@ -1342,7 +1342,7 @@ void user_sendMoneyToOtherAcc() {
 		}
 		//Добавление платежа во втоорой счёт
 		for (auto& temp : accounts) {
-			if (temp.AccNumber == secondAcc)
+			if (temp.getAccNumber() == secondAcc)
 				temp.transactions2.push_back(payment);
 		}
 
@@ -1350,7 +1350,7 @@ void user_sendMoneyToOtherAcc() {
 			break;
 		else {
 			line(70);
-			cout << "\t\t\t Сумма успешно отправлена!" << endl;
+			cout << "\t\t\tСумма успешно отправлена!" << endl;
 			line(70);
 			Sleep(2000);  //Задержка 2 секунды
 			system("cls");//Очистка терминал

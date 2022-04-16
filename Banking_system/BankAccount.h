@@ -11,9 +11,12 @@
 using namespace std;
 //----------------------------------------------------------------------------------------------
 class BankAccount {
-public:
+private:
+
 	string AccNumber, owner, id, purpose, password;
 	double money;
+
+public:
 	int number;
 
 	vector<Payment> transactions1; //Вектор для хранения транзакций между своими счетами
@@ -26,7 +29,15 @@ public:
 	void enterPassword();    //Метод для ввода пароля счёта
 	void enterMoney();       //Метод для указания денег на счету 
 
+	int getNumber();         //Геттер для номера счёта
+	double getMoney();       //Геттер для денег на счету
+	string getAccNumber();   //Геттер для банковского номера счёта
+	string getOwner();       //Геттер для владельца счёта
+	string getPurpose();     //Геттер для назначения счёта
 	string getPassword();    //Геттер для пароля счёта
+
+	void sumMoney(double n); //Метод для увелечения денег на счету
+	void subMoney(double n); //Метод для уменьшения денег на счету
 
 	void idGeneration();     //Метод для генерации айди счёта
 	void numberGeneration(); //Метод для генерации номера счёта

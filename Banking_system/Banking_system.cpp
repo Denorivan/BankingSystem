@@ -14,7 +14,7 @@ int main() {
 }
 //----------------------------------------------------------------------------------------------
 void run() {
-	system("mode con cols=70 lines=15"); //Устанавливает размер окна
+	system("mode con cols=70 lines=17"); //Устанавливает размер окна
 	static const TCHAR* myTitle = TEXT("Banking system");
 	SetConsoleTitle(myTitle);
 	

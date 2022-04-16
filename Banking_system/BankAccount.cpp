@@ -26,7 +26,15 @@ void BankAccount::enterMoney() {
 	cin >> money;
 }
 
-string BankAccount::getPassword() { return password; }
+int BankAccount::getNumber()       { return number; }
+double BankAccount::getMoney()     { return money; }
+string BankAccount::getAccNumber() { return AccNumber; }
+string BankAccount::getOwner()     { return owner; }
+string BankAccount::getPurpose()   { return purpose; }
+string BankAccount::getPassword()  { return password; }
+
+void BankAccount::sumMoney(double n) { money += n; }
+void BankAccount::subMoney(double n) { money -= n; }
 
 void BankAccount::idGeneration() {
 	srand(time(0));
